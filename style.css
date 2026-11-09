@@ -1,9 +1,8 @@
 /*
-  Theme Name: Brad&rsquo;s Boilerplate Theme Tailwind
-  Author: Brad
-  Author URI: https://github.com/LearnWebCode
+  Theme Name: Apex Accounting & Advisory
+  Author: 828 Marketing Solutions
+  Description: Custom theme for Apex Accounting Inc. React (Navbar, Footer, Contact Form, Chatbot) + Tailwind PHP templates.
+  Version: 1.0.0
 */
 
-/* This file only exists for the sake of WordPress recognizing our theme / theme name etc... */
-
-/* We do not include CSS here and also WordPress will not load this file on the front-end */
+/* Styles live in src/index.css (compiled to build/index.css). WordPress does not load this file on the front-end. */

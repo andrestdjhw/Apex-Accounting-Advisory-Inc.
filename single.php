@@ -2,16 +2,14 @@
 
 get_header(); ?>
 
-<div class="max-w-4xl mx-auto px-4 prose">
-  <?php if (have_posts()) {
-    while(have_posts()) {
-      the_post(); ?>
-      <div>
-        <h1><?php the_title(); ?></h1>
-        <?php the_content(); ?>
-      </div>
-    <?php }
-  } ?>
+<div class="apex-container py-16 lg:py-24">
+  <?php while (have_posts()) {
+    the_post(); ?>
+    <article class="prose max-w-3xl">
+      <h1><?php the_title(); ?></h1>
+      <?php the_content(); ?>
+    </article>
+  <?php } ?>
 </div>
 
 <?php get_footer();

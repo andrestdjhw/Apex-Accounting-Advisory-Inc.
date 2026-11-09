@@ -1,10 +1,18 @@
-import Person from "./scripts/Person"
-import ExampleReactComponent from "./scripts/ExampleReactComponent"
 import React from "react"
 import ReactDOM from "react-dom/client"
+import Navbar from "./components/Navbar"
+import Footer from "./components/Footer"
+import { initReveal } from "./scripts/reveal"
 
-const person1 = new Person("Brad")
-if (document.querySelector("#render-react-example-here")) {
-  const root = ReactDOM.createRoot(document.querySelector("#render-react-example-here"))
-  root.render(<ExampleReactComponent />)
+const site = window.apexSite
+
+function mount(id, Component) {
+  const el = document.getElementById(id)
+  if (el && site) {
+    ReactDOM.createRoot(el).render(<Component site={site} />)
+  }
 }
+
+mount("apex-navbar", Navbar)
+mount("apex-footer", Footer)
+initReveal()

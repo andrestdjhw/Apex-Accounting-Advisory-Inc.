@@ -1,2 +1,161 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
+/*
+ * APEX brand tokens — taken from the live site's Breakdance global palette and
+ * fonts (Geologica for headings, Open Sans for body). Don't invent new colors here.
+ */
+@theme {
+  --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Geologica", ui-sans-serif, system-ui, sans-serif;
+
+  --color-apex-ink: #0a0a0c;
+  --color-apex-night: #0d1b28;
+  --color-apex-navy: #204262;
+  --color-apex-blue: #2d5c88;
+  --color-apex-sky: #3a76ae;
+  --color-apex-mist: #d7e3ee;
+  --color-apex-cloud: #ebf1f6;
+  --color-apex-smoke: #f5f5f5;
+  --color-apex-line: #ebebeb;
+
+  --ease-apex: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-rise: apex-rise 0.9s var(--ease-apex) both;
+  --animate-hero-zoom: apex-hero-zoom 2.2s var(--ease-apex) both;
+
+  @keyframes apex-rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 24px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes apex-hero-zoom {
+    from {
+      transform: scale(1.08);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+}
+
+/*
+ * Scroll reveal (driven by src/scripts/reveal.js).
+ * Elements are only hidden when JS is running (html.js), so content never
+ * stays invisible without it. Variants: up (default), fade, left, right, zoom, line.
+ */
+html.js [data-reveal] {
+  --reveal-from: translate3d(0, 32px, 0);
+  opacity: 0;
+  transform: var(--reveal-from);
+  transition:
+    opacity 0.8s var(--ease-apex),
+    transform 0.9s var(--ease-apex);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+html.js [data-reveal="fade"] { --reveal-from: none; }
+html.js [data-reveal="left"] { --reveal-from: translate3d(-48px, 0, 0); }
+html.js [data-reveal="right"] { --reveal-from: translate3d(48px, 0, 0); }
+html.js [data-reveal="zoom"] { --reveal-from: scale(0.92); }
+html.js [data-reveal="line"] {
+  --reveal-from: scaleX(0);
+  opacity: 1;
+  transform-origin: left center;
+}
+html.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .motion-safe-only {
+    animation: none !important;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-white font-sans text-apex-ink antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-apex-sky;
+  }
+}
+
+@utility apex-container {
+  @apply mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12;
+}
+
+@utility apex-eyebrow {
+  @apply font-display text-xs font-medium tracking-[0.3em] uppercase;
+}
+
+@utility apex-btn {
+  @apply inline-flex min-h-12 items-center justify-center gap-2.5 rounded-md px-6 font-display text-[15px] font-medium transition-colors duration-200;
+}
+
+@utility apex-btn-primary {
+  @apply apex-btn bg-apex-navy text-white hover:bg-apex-sky;
+}
+
+@utility apex-btn-outline-light {
+  @apply apex-btn border border-white/70 text-white hover:bg-white hover:text-apex-navy;
+}
+
+@utility apex-btn-outline {
+  @apply apex-btn border border-apex-navy text-apex-navy hover:bg-apex-navy hover:text-white;
+}
+
+/* FAQ accordion: smooth open/close where supported (Chrome 131+), instant elsewhere. */
+:root {
+  interpolate-size: allow-keywords;
+}
+
+.apex-faq::details-content {
+  block-size: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    block-size 0.45s var(--ease-apex),
+    opacity 0.35s var(--ease-apex),
+    content-visibility 0.45s allow-discrete;
+}
+
+.apex-faq[open]::details-content {
+  block-size: auto;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apex-faq::details-content {
+    transition: none;
+  }
+}
