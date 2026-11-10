@@ -1,6 +1,8 @@
 // Lightweight scroll animations (no dependencies).
 //  - [data-reveal="up|fade|left|right|zoom|line"]  animates every time it enters the viewport
 //                                                   and resets once it has fully left it
+//  - [data-reveal="curtain"]                       image/panel uncovered bottom-up (clip-path)
+//  - [data-split]                                   headline words rise one by one (split in motion.js)
 //  - [data-reveal-stagger="90"] on a parent          staggers its [data-reveal] children (ms)
 //  - [data-replay]                                   restarts the CSS animations inside it
 //                                                   (e.g. the hero entrance) when it comes back into view
@@ -24,7 +26,7 @@ function applyStagger(root) {
 
 export function scanReveal(root = document) {
   applyStagger(root)
-  const items = root.querySelectorAll("[data-reveal]")
+  const items = root.querySelectorAll("[data-reveal], [data-split]:not([data-split='load'])")
 
   if (!enterObserver || reduceMotion.matches) {
     items.forEach(el => el.classList.add("is-visible"))

@@ -138,6 +138,17 @@ function apex_meta_description() {
 add_action('wp_head', 'apex_meta_description', 1);
 
 /**
+ * Anchor for the cookie banner's "Learn more" link (/privacy-policy/#cookies).
+ */
+function apex_privacy_cookie_anchor($content) {
+  if (!is_page('privacy-policy') || strpos($content, 'id="cookies"') !== false) {
+    return $content;
+  }
+  return preg_replace('/<h([2-4])>(\s*Tracking Technologies and Cookies\s*)<\/h\1>/i', '<h$1 id="cookies" class="scroll-mt-32">$2</h$1>', $content, 1);
+}
+add_filter('the_content', 'apex_privacy_cookie_anchor');
+
+/**
  * Service schema on /services/ (only content that is visible on the page).
  */
 function apex_services_schema() {

@@ -42,7 +42,7 @@ $schema = array(
     </nav>
 
     <p class="motion-safe-only animate-rise [animation-delay:80ms] apex-eyebrow mt-10 text-apex-mist"><?php echo esc_html($eyebrow); ?></p>
-    <h1 class="motion-safe-only animate-rise [animation-delay:160ms] mt-4 max-w-3xl text-4xl leading-[1.08] font-light tracking-tight sm:text-5xl lg:text-6xl">
+    <h1 data-split="load" style="--split-delay:200ms" class="mt-4 max-w-3xl text-4xl leading-[1.08] font-light tracking-tight sm:text-5xl lg:text-6xl">
       <?php echo esc_html($title); ?>
     </h1>
     <?php if ($intro) : ?>

@@ -8,18 +8,18 @@ $contact = apex_contact();
   <div class="apex-container">
     <div data-reveal="zoom" class="grid overflow-hidden rounded-2xl bg-apex-night text-white lg:grid-cols-2">
       <div class="px-6 py-12 sm:px-12 lg:px-16 lg:py-16" data-reveal style="--reveal-delay:200ms">
-        <h2 class="text-3xl leading-tight font-light sm:text-4xl">
+        <h2 class="text-3xl leading-tight font-light sm:text-4xl" data-split>
           Let’s review the structure <span class="font-semibold">behind your business.</span>
         </h2>
         <p class="mt-5 max-w-xl leading-relaxed text-white/75">
           Schedule a private strategy session with our team to talk through where your business stands today and where you want it to go.
         </p>
         <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
-          <a href="<?php echo esc_url($contact['strategyUrl']); ?>" class="apex-btn bg-white text-apex-navy hover:bg-apex-mist" data-track="cta_strategy_session">
+          <a href="<?php echo esc_url($contact['strategyUrl']); ?>" class="apex-btn bg-white text-apex-navy hover:bg-apex-mist" data-track="cta_strategy_session" data-magnetic>
             <?php echo apex_icon('calendar', 'size-5'); ?>
             Schedule a Strategy Session
           </a>
-          <a href="<?php echo esc_attr($contact['phoneHref']); ?>" class="apex-btn-outline-light" data-track="click_to_call">
+          <a href="<?php echo esc_attr($contact['phoneHref']); ?>" class="apex-btn-outline-light" data-track="click_to_call" data-magnetic>
             <?php echo apex_icon('phone', 'size-5'); ?>
             <?php echo esc_html($contact['phone']); ?>
           </a>
@@ -41,7 +41,8 @@ $contact = apex_contact();
         </address>
       </div>
 
-      <div class="group relative min-h-80 bg-apex-navy lg:min-h-full" data-reveal="fade" style="--reveal-delay:400ms">
+      <div class="relative min-h-80 lg:min-h-full" data-reveal="curtain" style="--reveal-delay:300ms">
+      <div class="group absolute inset-0 bg-apex-navy">
         <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center text-white/60" aria-hidden="true">
           <?php echo apex_icon('map-pin', 'size-10 text-apex-mist'); ?>
           <span class="text-sm"><?php echo esc_html($contact['street'] . ', ' . $contact['city'] . ', ' . $contact['region']); ?></span>
@@ -65,6 +66,7 @@ $contact = apex_contact();
           Get Directions
           <span class="sr-only">(opens Google Maps in a new tab)</span>
         </a>
+      </div>
       </div>
     </div>
   </div>

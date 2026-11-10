@@ -12,7 +12,7 @@ const US_STATES = [
   "West Virginia", "Wisconsin", "Wyoming",
 ]
 
-const EMPTY = {
+export const EMPTY = {
   first_name: "",
   last_name: "",
   company: "",
@@ -27,7 +27,7 @@ const EMPTY = {
   website: "", // honeypot
 }
 
-function validate(values) {
+export function validate(values) {
   const errors = {}
   if (!values.first_name.trim()) errors.first_name = "Please enter your first name."
   if (!values.last_name.trim()) errors.last_name = "Please enter your last name."
@@ -317,11 +317,11 @@ export default function ContactForm({ site }) {
       </div>
 
       <div className="flex flex-col gap-4 border-t border-apex-line pt-6 sm:flex-row sm:items-center sm:justify-between">
-        <p className="flex items-center gap-2 text-xs text-apex-ink/60">
+        <p className="flex min-w-0 items-center gap-2 text-xs leading-relaxed text-apex-ink/60">
           <Icon name="lock" className="size-4 shrink-0" />
           Your information is sent securely and only used to contact you.
         </p>
-        <button type="submit" disabled={submitting} className="apex-btn-primary disabled:cursor-wait disabled:opacity-70">
+        <button type="submit" disabled={submitting} className="apex-btn-primary w-full shrink-0 whitespace-nowrap disabled:cursor-wait disabled:opacity-70 sm:w-auto">
           {submitting ? (
             <>
               <span className="size-5 animate-spin rounded-full border-2 border-white/30 border-t-white" aria-hidden="true" />

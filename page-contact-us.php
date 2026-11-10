@@ -29,7 +29,7 @@ $cards = array(
     <div class="lg:col-span-5">
       <div data-reveal="left">
         <?php echo apex_eyebrow('Get in touch'); ?>
-        <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl">Let’s talk about your business</h2>
+        <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl" data-split>Let’s talk about your business</h2>
         <p class="mt-5 leading-relaxed text-apex-ink/70">Tell us a little about your company and when you’d like to begin. A member of our team will follow up to schedule your private strategy session.</p>
       </div>
 

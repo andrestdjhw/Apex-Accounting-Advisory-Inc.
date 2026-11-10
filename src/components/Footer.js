@@ -58,6 +58,11 @@ export default function Footer({ site }) {
                 </a>
               </li>
             ))}
+            <li>
+              <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("apex:cookie-settings"))} className="transition-colors hover:text-white">
+                Cookie Settings
+              </button>
+            </li>
           </ul>
         </nav>
 
@@ -103,7 +108,7 @@ export default function Footer({ site }) {
           <p>
             © {year} {contact.name} All rights reserved.
           </p>
-          <ul className="flex gap-6">
+          <ul className="flex flex-wrap gap-x-6 gap-y-2">
             {legal.map(item => (
               <li key={item.url}>
                 <a href={item.url} className="transition-colors hover:text-white">

@@ -23,7 +23,7 @@ get_template_part('template-parts/page-hero', null, array(
   <div class="apex-container grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-20">
     <div data-reveal="left">
       <?php echo apex_eyebrow('Our approach'); ?>
-      <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl">Strategic Financial Guidance</h2>
+      <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl" data-split>Strategic Financial Guidance</h2>
       <div class="mt-6 space-y-5 text-lg leading-relaxed text-apex-ink/75">
         <p>APEX Accounting &amp; Advisory helps businesses and individuals make confident financial decisions through proactive planning, expert accounting, and personalized advisory services.</p>
         <p>Rather than simply managing numbers, the firm develops financial strategies designed around each client’s goals, risks and opportunities for sustainable growth.</p>
@@ -38,6 +38,7 @@ get_template_part('template-parts/page-hero', null, array(
     </div>
 
     <div class="relative" data-reveal="right">
+      <div data-reveal="curtain" style="--reveal-delay:150ms">
       <div class="overflow-hidden rounded-2xl">
         <?php
         echo apex_media_img('hero', 'large', array(
@@ -46,6 +47,7 @@ get_template_part('template-parts/page-hero', null, array(
           'class' => 'aspect-[4/3] w-full object-cover object-[30%_center] transition duration-700 ease-apex hover:scale-105',
         ));
         ?>
+      </div>
       </div>
       <div class="absolute -bottom-6 -left-6 -z-10 hidden size-40 rounded-2xl bg-apex-cloud lg:block" aria-hidden="true"></div>
     </div>
@@ -57,9 +59,9 @@ get_template_part('template-parts/page-hero', null, array(
   <div class="apex-container grid gap-12 lg:grid-cols-12">
     <div class="lg:col-span-5" data-reveal>
       <?php echo apex_eyebrow('Long-term partnership'); ?>
-      <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl">Building Long-Term Success</h2>
+      <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl" data-split>Building Long-Term Success</h2>
     </div>
-    <div class="space-y-5 text-lg leading-relaxed text-apex-ink/75 lg:col-span-7" data-reveal style="--reveal-delay:150ms">
+    <div class="space-y-5 text-xl leading-relaxed text-apex-navy lg:col-span-7" data-scrub>
       <p>With a commitment to precision, integrity, and lasting partnerships, APEX works alongside clients to navigate complex financial challenges with confidence.</p>
       <p>From tax planning and financial reporting to business advisory and compliance, the firm delivers services tailored to each client’s needs.</p>
     </div>
@@ -85,13 +87,14 @@ get_template_part('template-parts/page-hero', null, array(
   <div class="apex-container">
     <div class="max-w-2xl" data-reveal>
       <?php echo apex_eyebrow('Our values', 'dark'); ?>
-      <h2 class="mt-5 text-3xl leading-tight font-medium sm:text-4xl">The Principles Behind Every Financial Strategy</h2>
+      <h2 class="mt-5 text-3xl leading-tight font-medium sm:text-4xl" data-split>The Principles Behind Every Financial Strategy</h2>
       <p class="mt-5 leading-relaxed text-white/75">The values guiding every recommendation, relationship, and financial strategy we deliver.</p>
     </div>
 
     <ul class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" data-reveal-stagger="110">
       <?php foreach (apex_values() as $value) : ?>
-        <li class="group flex flex-col rounded-2xl bg-white p-7 text-apex-ink shadow-xl shadow-black/20 transition duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-black/30" data-reveal>
+        <li class="flex" data-reveal>
+          <div class="apex-tilt group flex flex-1 flex-col rounded-2xl bg-white p-7 text-apex-ink shadow-xl shadow-black/20 hover:shadow-2xl hover:shadow-black/30" data-tilt="8">
           <span class="flex size-14 items-center justify-center rounded-xl bg-apex-cloud text-apex-sky transition duration-500 ease-apex group-hover:-translate-y-1 group-hover:bg-apex-navy group-hover:text-white"><?php echo apex_icon($value['icon'], 'size-7'); ?></span>
           <h3 class="mt-6 text-xl font-medium text-apex-navy"><?php echo esc_html($value['title']); ?></h3>
           <p class="mt-3 text-sm leading-relaxed text-apex-ink/70"><?php echo esc_html($value['text']); ?></p>
@@ -100,6 +103,7 @@ get_template_part('template-parts/page-hero', null, array(
               <span class="block font-display text-xs font-medium tracking-[0.2em] text-apex-sky uppercase">What it means for you</span>
               <span class="mt-2 block"><?php echo esc_html($value['client']); ?></span>
             </div>
+          </div>
           </div>
         </li>
       <?php endforeach; ?>
@@ -113,7 +117,7 @@ get_template_part('template-parts/page-hero', null, array(
     <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
       <div class="max-w-2xl" data-reveal>
         <?php echo apex_eyebrow('Leadership'); ?>
-        <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl">The people leading APEX</h2>
+        <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl" data-split>The people leading APEX</h2>
       </div>
       <a href="<?php echo esc_url(home_url('/team/')); ?>" class="apex-btn-outline shrink-0 self-start md:self-auto" data-reveal="fade" style="--reveal-delay:200ms">
         Meet the Full Team

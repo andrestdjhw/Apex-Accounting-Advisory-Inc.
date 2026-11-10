@@ -16,6 +16,7 @@ $pillars  = apex_pillars();
 <section class="relative isolate overflow-hidden bg-apex-night text-white" data-replay>
   <div class="absolute inset-y-0 right-0 -z-20 w-full overflow-hidden lg:w-[62%]" aria-hidden="true">
   <div class="absolute -inset-y-16 inset-x-0" data-parallax="0.1">
+  <div class="size-full transition-transform duration-[1400ms] ease-apex" data-mouse-parallax>
   <?php
   echo apex_media_img('hero', 'full', array(
     'alt'           => '',
@@ -28,10 +29,11 @@ $pillars  = apex_pillars();
   ?>
   </div>
   </div>
+  </div>
   <div class="absolute inset-0 -z-10 bg-apex-night/85 lg:bg-transparent lg:bg-linear-to-r lg:from-apex-night lg:from-38% lg:via-apex-night/75 lg:via-55% lg:to-apex-night/10" aria-hidden="true"></div>
 
-  <div class="apex-container py-16 sm:py-20 lg:py-24">
-    <div class="max-w-3xl">
+  <div class="apex-container grid gap-12 py-16 sm:py-20 lg:grid-cols-12 lg:items-center lg:gap-10 lg:py-20 xl:gap-16">
+    <div class="lg:col-span-7">
       <p class="motion-safe-only animate-rise apex-eyebrow flex flex-wrap gap-x-3 gap-y-1 tracking-[0.2em] text-white/80 sm:gap-x-4 sm:tracking-[0.3em]">
         <span>Strategy</span><span aria-hidden="true">/</span>
         <span>Accounting</span><span aria-hidden="true">/</span>
@@ -39,7 +41,7 @@ $pillars  = apex_pillars();
         <span>Advisory</span>
       </p>
 
-      <h1 class="motion-safe-only animate-rise [animation-delay:120ms] mt-6 text-4xl leading-[1.08] font-light tracking-tight sm:text-5xl lg:max-w-2xl lg:text-6xl">
+      <h1 data-split="load" class="mt-6 text-4xl leading-[1.08] font-light tracking-tight sm:text-5xl lg:max-w-2xl lg:text-6xl">
         The structure you don’t see… is what determines your
         <span class="font-semibold text-apex-mist">company’s future.</span>
       </h1>
@@ -49,14 +51,30 @@ $pillars  = apex_pillars();
       </p>
 
       <div class="motion-safe-only animate-rise [animation-delay:360ms] mt-10 flex flex-col gap-4 sm:flex-row">
-        <a href="<?php echo esc_url($contact['strategyUrl']); ?>" class="apex-btn border border-white/40 bg-apex-navy text-white hover:bg-apex-sky" data-track="cta_strategy_session">
+        <a href="<?php echo esc_url($contact['strategyUrl']); ?>" class="apex-btn border border-white/40 bg-apex-navy text-white hover:bg-apex-sky" data-track="cta_strategy_session" data-magnetic>
           <?php echo apex_icon('calendar', 'size-5'); ?>
           Schedule a Strategy Session
         </a>
-        <a href="<?php echo esc_url(home_url('/services/')); ?>" class="apex-btn-outline-light">
+        <a href="<?php echo esc_url(home_url('/services/')); ?>" class="apex-btn-outline-light" data-magnetic>
           Our Services
           <?php echo apex_icon('arrow-right', 'size-5'); ?>
         </a>
+      </div>
+    </div>
+
+    <!-- Quick strategy-session request (src/components/HeroForm.js) -->
+    <div class="lg:col-span-5">
+      <div class="motion-safe-only animate-rise [animation-delay:450ms] relative overflow-hidden rounded-2xl border border-white/20 bg-white/10 p-6 shadow-2xl shadow-black/40 ring-1 ring-white/5 backdrop-blur-xl sm:p-8">
+        <div class="pointer-events-none absolute -top-24 -right-24 size-56 rounded-full bg-apex-sky/30 blur-3xl" aria-hidden="true"></div>
+        <div id="apex-hero-form" class="relative">
+          <p class="apex-eyebrow text-apex-mist">Private &amp; no obligation</p>
+          <h2 class="mt-2 font-display text-2xl font-medium">Request a Strategy Session</h2>
+          <p class="mt-3 text-sm leading-relaxed text-white/75">Tell us a little about your business and our team will reach out to schedule a time.</p>
+          <a href="<?php echo esc_url($contact['strategyUrl']); ?>" class="apex-btn mt-6 w-full bg-white text-apex-navy hover:bg-apex-mist" data-track="cta_strategy_session">
+            <?php echo apex_icon('calendar', 'size-5'); ?>
+            Open the request form
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -84,7 +102,7 @@ $pillars  = apex_pillars();
   <div class="apex-container grid gap-12 lg:grid-cols-12 lg:items-center">
     <div class="lg:col-span-4" data-reveal="left">
       <?php echo apex_eyebrow('Our Services'); ?>
-      <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl">
+      <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl" data-split>
         Comprehensive Financial Solutions for Your Business
       </h2>
       <p class="mt-5 leading-relaxed text-apex-ink/70">
@@ -101,7 +119,8 @@ $pillars  = apex_pillars();
         <li data-reveal="zoom">
           <a
             href="<?php echo esc_url($service['url']); ?>"
-            class="group flex h-full flex-col items-center justify-center gap-4 rounded-lg border border-apex-line bg-apex-cloud/60 px-4 py-8 text-center transition duration-200 hover:-translate-y-0.5 hover:border-apex-mist hover:bg-white hover:shadow-lg hover:shadow-apex-night/5"
+            data-tilt="10"
+            class="apex-tilt group flex h-full flex-col items-center justify-center gap-4 rounded-lg border border-apex-line bg-apex-cloud/60 px-4 py-8 text-center hover:border-apex-mist hover:bg-white hover:shadow-lg hover:shadow-apex-night/5"
           >
             <span class="text-apex-sky transition duration-300 group-hover:scale-110 group-hover:text-apex-navy"><?php echo apex_icon($service['icon'], 'size-10'); ?></span>
             <span class="font-display leading-snug font-medium text-apex-navy"><?php echo esc_html($service['title']); ?></span>
@@ -121,7 +140,7 @@ $pillars  = apex_pillars();
     <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
       <div class="max-w-2xl" data-reveal>
         <?php echo apex_eyebrow('Our Team'); ?>
-        <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl">Meet the people behind APEX</h2>
+        <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl" data-split>Meet the people behind APEX</h2>
         <p class="mt-4 leading-relaxed text-apex-ink/70">
           An experienced team guiding clients toward greater clarity, confidence, and financial success.
         </p>
@@ -146,7 +165,7 @@ $pillars  = apex_pillars();
     <div class="lg:col-span-4">
       <div class="lg:sticky lg:top-32" data-reveal="left">
         <?php echo apex_eyebrow('FAQs'); ?>
-        <h2 id="faq-heading" class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl">Frequently Asked Questions</h2>
+        <h2 id="faq-heading" class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl" data-split>Frequently Asked Questions</h2>
         <p class="mt-5 leading-relaxed text-apex-ink/70">
           Answers to common questions about working with APEX. Don’t see yours? Our team is happy to help.
         </p>

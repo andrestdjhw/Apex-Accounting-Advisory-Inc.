@@ -39,7 +39,7 @@ get_template_part('template-parts/page-hero', null, array(
   <div class="apex-container">
     <div class="max-w-2xl" data-reveal>
       <?php echo apex_eyebrow('What we do'); ?>
-      <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl">Eight ways we support your business</h2>
+      <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl" data-split>Eight ways we support your business</h2>
       <p class="mt-5 leading-relaxed text-apex-ink/70">Each engagement is scoped to your needs. Many clients combine services, so planning, accounting and compliance work from the same information.</p>
     </div>
 
@@ -64,13 +64,13 @@ get_template_part('template-parts/page-hero', null, array(
 <?php foreach ($services as $i => $service) : ?>
   <?php $alt = $i % 2 === 0; ?>
   <section id="<?php echo esc_attr($service['slug']); ?>" class="scroll-mt-40 border-t border-apex-line py-20 lg:py-24 <?php echo $alt ? 'bg-apex-cloud/50' : ''; ?>" aria-labelledby="<?php echo esc_attr($service['slug']); ?>-title" data-service-section>
-    <div class="apex-container grid gap-12 lg:grid-cols-12 lg:gap-16">
-      <div class="lg:col-span-7" data-reveal="left">
+    <div class="apex-container grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
+      <div class="lg:col-span-7" data-reveal="<?php echo $alt ? 'left' : 'right'; ?>">
         <div class="flex items-center gap-4">
           <span class="flex size-14 items-center justify-center rounded-xl bg-apex-navy text-white"><?php echo apex_icon($service['icon'], 'size-7'); ?></span>
           <span class="font-display text-sm text-apex-ink/50"><?php echo esc_html(sprintf('%02d / %02d', $i + 1, count($services))); ?></span>
         </div>
-        <h2 id="<?php echo esc_attr($service['slug']); ?>-title" class="mt-6 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl"><?php echo esc_html($service['title']); ?></h2>
+        <h2 id="<?php echo esc_attr($service['slug']); ?>-title" class="mt-6 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl" data-split><?php echo esc_html($service['title']); ?></h2>
         <p class="mt-5 text-lg leading-relaxed text-apex-ink/75"><?php echo esc_html($service['intro']); ?></p>
 
         <h3 class="mt-10 font-display text-xs font-medium tracking-[0.25em] text-apex-sky uppercase">Who it’s for</h3>
@@ -88,8 +88,22 @@ get_template_part('template-parts/page-hero', null, array(
         </div>
       </div>
 
-      <div class="lg:col-span-5" data-reveal="right" style="--reveal-delay:150ms">
-        <div class="rounded-2xl bg-white p-7 shadow-sm ring-1 ring-apex-line lg:p-9">
+      <div class="lg:col-span-5 <?php echo $alt ? '' : 'lg:order-first'; ?>" data-reveal="<?php echo $alt ? 'right' : 'left'; ?>" style="--reveal-delay:150ms">
+        <figure class="group relative" data-reveal="curtain" style="--reveal-delay:250ms">
+          <div class="relative overflow-hidden rounded-2xl bg-apex-cloud">
+            <?php
+            echo apex_media_img('service-' . $service['slug'], 'large', array(
+              'sizes'   => '(min-width: 1024px) 40vw, 100vw',
+              'loading' => 'lazy',
+              'class'   => 'aspect-[4/3] w-full object-cover transition duration-700 ease-apex group-hover:scale-105',
+            ));
+            ?>
+            <div class="pointer-events-none absolute inset-0 bg-linear-to-t from-apex-night/55 via-apex-night/10 to-transparent" aria-hidden="true"></div>
+            <span class="absolute top-4 left-4 flex size-12 items-center justify-center rounded-xl bg-white/15 text-white ring-1 ring-white/25 backdrop-blur-md" aria-hidden="true"><?php echo apex_icon($service['icon'], 'size-6'); ?></span>
+          </div>
+        </figure>
+
+        <div class="relative z-10 mx-3 -mt-16 rounded-2xl bg-white p-7 shadow-xl shadow-apex-night/10 ring-1 ring-apex-line sm:mx-6 lg:p-9">
           <h3 class="font-display text-lg font-medium text-apex-navy">What’s typically included</h3>
           <ul class="mt-5 space-y-4">
             <?php foreach ($service['includes'] as $item) : ?>

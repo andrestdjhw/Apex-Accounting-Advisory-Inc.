@@ -27,7 +27,27 @@ function apex_media_manifest() {
     'logo-white' => array('file' => 'logo-white.webp', 'title' => 'APEX Accounting & Advisory logo (white)', 'alt' => 'Apex Accounting & Advisory'),
     'logo-icon'  => array('file' => 'logo-icon.webp', 'title' => 'APEX site icon', 'alt' => 'APEX'),
     'hero'       => array('file' => 'hero-apex.webp', 'title' => 'APEX office building signage', 'alt' => ''),
+    'process-bg' => array('file' => 'process-bg.webp', 'title' => 'Glass facade background (Pexels #33643675)', 'alt' => ''),
   );
+
+  // Service photos: free-license stock from Pexels (pexels.com/license), photo IDs noted for reference.
+  $service_photos = array(
+    'strategic-tax-planning'    => array('id' => 6863243, 'alt' => 'Notebook with “tax planning” handwritten on grid paper next to a percent sign'),
+    'executive-accounting'      => array('id' => 8296990, 'alt' => 'Accountant reviewing documents with a calculator and laptop'),
+    'business-advisory'         => array('id' => 7979447, 'alt' => 'Advisor meeting with business owners around an office table'),
+    'financial-reporting'       => array('id' => 8062287, 'alt' => 'Professionals reviewing a financial report with charts'),
+    'payroll-services'          => array('id' => 6929012, 'alt' => 'Calendar, clipboard with forms and a calculator on a desk'),
+    'irs-compliance'            => array('id' => 15116664, 'alt' => 'Federal tax return form on a desk'),
+    'corporate-tax-preparation' => array('id' => 3771097, 'alt' => 'Business executive signing documents at a desk'),
+    'business-structure'        => array('id' => 8424567, 'alt' => 'Two professionals planning a business strategy on a whiteboard'),
+  );
+  foreach ($service_photos as $slug => $photo) {
+    $manifest['service-' . $slug] = array(
+      'file'  => 'services/' . $slug . '.webp',
+      'title' => 'Service photo — ' . $slug . ' (Pexels #' . $photo['id'] . ')',
+      'alt'   => $photo['alt'],
+    );
+  }
 
   foreach (apex_team() as $member) {
     if (!empty($member['photo'])) {

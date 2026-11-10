@@ -227,10 +227,10 @@ function apex_pillars() {
  */
 function apex_steps() {
   return array(
-    array('title' => 'Discovery', 'text' => 'We learn about your business, your goals and the questions you need answered.'),
-    array('title' => 'Review & Assessment', 'text' => 'We review your current accounting, tax position and business structure.'),
-    array('title' => 'Strategy', 'text' => 'We outline a plan with clear priorities and next steps.'),
-    array('title' => 'Ongoing Support', 'text' => 'We stay involved as your business and its obligations evolve.'),
+    array('icon' => 'search', 'title' => 'Discovery', 'text' => 'We learn about your business, your goals and the questions you need answered.'),
+    array('icon' => 'clipboard-check', 'title' => 'Review & Assessment', 'text' => 'We review your current accounting, tax position and business structure.'),
+    array('icon' => 'target', 'title' => 'Strategy', 'text' => 'We outline a plan with clear priorities and next steps.'),
+    array('icon' => 'users', 'title' => 'Ongoing Support', 'text' => 'We stay involved as your business and its obligations evolve.'),
   );
 }
 

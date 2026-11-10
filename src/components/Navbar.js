@@ -95,7 +95,7 @@ function ServicesMenu({ item, services, active }) {
 }
 
 const linkClass = active =>
-  `relative py-2 font-display text-[15px] transition-colors after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-apex-navy after:transition-transform ${
+  `relative py-2 font-display text-[17px] whitespace-nowrap transition-colors after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-apex-navy after:transition-transform ${
     active ? "font-medium text-apex-navy after:scale-x-100" : "text-apex-ink/75 hover:text-apex-navy after:scale-x-0"
   }`
 
@@ -104,7 +104,7 @@ function MobileMenu({ site, currentPath, onClose }) {
   const { nav, services, contact } = site
 
   return (
-    <div id="apex-mobile-menu" className="max-h-[calc(100dvh-5rem)] overflow-y-auto border-t border-apex-line bg-white xl:hidden">
+    <div id="apex-mobile-menu" data-lenis-prevent className="max-h-[calc(100dvh-5rem)] overflow-y-auto border-t border-apex-line bg-white xl:hidden">
       <nav aria-label="Mobile" className="apex-container py-4">
         <ul className="divide-y divide-apex-line">
           {nav.map(item => {
@@ -113,7 +113,7 @@ function MobileMenu({ site, currentPath, onClose }) {
               return (
                 <li key={item.url}>
                   <div className="flex items-center justify-between">
-                    <a href={item.url} className={`block py-3.5 font-display text-base ${active ? "font-medium text-apex-navy" : "text-apex-ink"}`}>
+                    <a href={item.url} className={`block py-3.5 font-display text-lg ${active ? "font-medium text-apex-navy" : "text-apex-ink"}`}>
                       {item.label}
                     </a>
                     <button
@@ -146,7 +146,7 @@ function MobileMenu({ site, currentPath, onClose }) {
                 <a
                   href={item.url}
                   aria-current={active ? "page" : undefined}
-                  className={`block py-3.5 font-display text-base ${active ? "font-medium text-apex-navy" : "text-apex-ink"}`}
+                  className={`block py-3.5 font-display text-lg ${active ? "font-medium text-apex-navy" : "text-apex-ink"}`}
                 >
                   {item.label}
                 </a>
@@ -199,7 +199,9 @@ export default function Navbar({ site }) {
     document.addEventListener("keydown", onKey)
     window.addEventListener("resize", onResize)
     document.body.style.overflow = "hidden"
+    window.apexLenis?.stop()
     return () => {
+      window.apexLenis?.start()
       document.removeEventListener("keydown", onKey)
       window.removeEventListener("resize", onResize)
       document.body.style.overflow = ""
@@ -210,11 +212,11 @@ export default function Navbar({ site }) {
     <header className={`bg-white/95 backdrop-blur transition-shadow ${scrolled || mobileOpen ? "shadow-md shadow-apex-night/5" : ""}`}>
       <div className="apex-container flex h-20 items-center justify-between gap-6">
         <a href={homeUrl} className="shrink-0" aria-label="Apex Accounting Inc. — Home">
-          <img src={logo.dark} alt="Apex Accounting & Advisory" width="1024" height="163" className="h-7 w-auto sm:h-8" />
+          <img src={logo.dark} alt="Apex Accounting & Advisory" width="1024" height="163" className="h-8 w-auto sm:h-[37px]" />
         </a>
 
         <nav aria-label="Main" className="hidden xl:block">
-          <ul className="flex items-center gap-8">
+          <ul className="flex items-center gap-6 2xl:gap-8">
             {nav.map(item =>
               item.children === "services" ? (
                 <ServicesMenu key={item.url} item={item} services={services} active={isActive(item, currentPath)} />
@@ -229,21 +231,21 @@ export default function Navbar({ site }) {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-3 xl:gap-6">
+        <div className="flex items-center gap-3 xl:gap-5 2xl:gap-6">
           <span className="hidden h-6 w-px bg-apex-ink/20 xl:block" aria-hidden="true" />
           <a
             href={contact.portalUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden items-center gap-2 font-display text-[15px] text-apex-ink/75 transition-colors hover:text-apex-navy xl:flex"
+            className="hidden items-center gap-2 font-display text-[17px] whitespace-nowrap text-apex-ink/75 transition-colors hover:text-apex-navy xl:flex"
             data-track="portal_click"
           >
             <Icon name="user" className="size-5" />
             Client Portal
             <span className="sr-only">(opens in a new tab)</span>
           </a>
-          <a href={contact.strategyUrl} className="apex-btn-primary hidden md:inline-flex" data-track="cta_strategy_session">
-            <Icon name="calendar" className="size-5" />
+          <a href={contact.strategyUrl} className="apex-btn-primary hidden whitespace-nowrap md:inline-flex xl:px-5 2xl:px-6" data-track="cta_strategy_session">
+            <Icon name="calendar" className="size-5 xl:hidden 2xl:block" />
             Schedule a Strategy Session
           </a>
           <button

@@ -18,7 +18,7 @@ get_template_part('template-parts/page-hero', null, array(
   <div class="apex-container">
     <div class="max-w-2xl" data-reveal>
       <?php echo apex_eyebrow('Meet the team'); ?>
-      <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl">The people behind your financial structure</h2>
+      <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl" data-split>The people behind your financial structure</h2>
       <p class="mt-5 leading-relaxed text-apex-ink/70">Tax, accounting, advisory and client service professionals working together on every engagement.</p>
     </div>
 
@@ -33,7 +33,7 @@ get_template_part('template-parts/page-hero', null, array(
 <section class="bg-apex-navy py-16 text-white lg:py-20">
   <div class="apex-container flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
     <div class="max-w-2xl" data-reveal>
-      <h2 class="text-3xl leading-tight font-light sm:text-4xl">Work with a team that <span class="font-semibold">knows your business.</span></h2>
+      <h2 class="text-3xl leading-tight font-light sm:text-4xl" data-split>Work with a team that <span class="font-semibold">knows your business.</span></h2>
       <p class="mt-4 leading-relaxed text-white/75">See how our services fit together, or learn more about the values that guide our work.</p>
     </div>
     <div class="flex flex-col gap-4 sm:flex-row" data-reveal="right">

@@ -18,6 +18,8 @@
       </footer>
     </div>
 
+    <div id="apex-cookie-consent"></div>
+
     <?php wp_footer(); ?>
   </body>
 </html>

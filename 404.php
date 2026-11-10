@@ -10,7 +10,7 @@ get_header();
   <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,var(--color-apex-blue)_0%,transparent_55%)] opacity-60" aria-hidden="true"></div>
   <div class="apex-container py-24 lg:py-32">
     <p class="motion-safe-only animate-rise apex-eyebrow text-apex-mist">Error 404</p>
-    <h1 class="motion-safe-only animate-rise [animation-delay:120ms] mt-5 max-w-3xl text-4xl leading-[1.08] font-light tracking-tight sm:text-5xl lg:text-6xl">
+    <h1 data-split="load" class="mt-5 max-w-3xl text-4xl leading-[1.08] font-light tracking-tight sm:text-5xl lg:text-6xl">
       We couldn’t find <span class="font-semibold">that page.</span>
     </h1>
     <p class="motion-safe-only animate-rise [animation-delay:240ms] mt-6 max-w-xl text-lg leading-relaxed text-white/80">
