@@ -2,7 +2,10 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 import Navbar from "./components/Navbar"
 import Footer from "./components/Footer"
+import ContactForm from "./components/ContactForm"
 import { initReveal } from "./scripts/reveal"
+import { initTracking } from "./scripts/tracking"
+import { initServiceNav } from "./scripts/service-nav"
 
 const site = window.apexSite
 
@@ -15,4 +18,7 @@ function mount(id, Component) {
 
 mount("apex-navbar", Navbar)
 mount("apex-footer", Footer)
+mount("apex-contact-form", ContactForm)
 initReveal()
+initTracking()
+initServiceNav()

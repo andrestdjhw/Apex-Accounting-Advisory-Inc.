@@ -2,6 +2,8 @@
 
 require_once get_theme_file_path('/inc/site-data.php');
 require_once get_theme_file_path('/inc/media.php');
+require_once get_theme_file_path('/inc/pages.php');
+require_once get_theme_file_path('/inc/contact-form.php');
 
 function apex_load_assets() {
   $asset = include get_theme_file_path('/build/index.asset.php');
@@ -42,21 +44,6 @@ function apex_site_icon() {
 }
 add_action('wp_head', 'apex_site_icon');
 
-/**
- * Basic meta description on the front page (the hero <img> uses fetchpriority="high").
- * Skipped when an SEO plugin is active so it doesn't duplicate tags.
- */
-function apex_front_page_head() {
-  if (!is_front_page()) {
-    return;
-  }
-
-  if (defined('WPSEO_VERSION') || defined('RANK_MATH_VERSION') || defined('AIOSEO_VERSION')) {
-    return;
-  }
-  echo '<meta name="description" content="' . esc_attr('Apex Accounting Inc. helps business owners in Irvine, CA make confident financial decisions through strategic tax planning, accounting, compliance and business advisory.') . '">' . "\n";
-}
-add_action('wp_head', 'apex_front_page_head', 1);
 
 /**
  * Structured data (brief §6): AccountingService with NAP matching the visible content.

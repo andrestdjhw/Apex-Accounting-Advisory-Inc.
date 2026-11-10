@@ -9,20 +9,7 @@ $contact  = apex_contact();
 $services = apex_services();
 $team     = array_slice(apex_team(), 0, 4);
 
-$pillars = array(
-  array('icon' => 'compass', 'title' => 'Plan Strategically', 'text' => 'Optimize your tax position and financial structure.'),
-  array('icon' => 'clipboard-check', 'title' => 'Stay Compliant', 'text' => 'Meet your accounting and IRS obligations with confidence.'),
-  array('icon' => 'trending-up', 'title' => 'Gain Clarity', 'text' => 'Understand your numbers and make informed decisions.'),
-  array('icon' => 'users', 'title' => 'Grow with a Partner', 'text' => 'Ongoing guidance for today and what’s next.'),
-);
-
-// PENDING CLIENT CONFIRMATION (brief §5.1): example process, replace with APEX's real one.
-$steps = array(
-  array('title' => 'Discovery', 'text' => 'We learn about your business, your goals and the questions you need answered.'),
-  array('title' => 'Review & Assessment', 'text' => 'We review your current accounting, tax position and business structure.'),
-  array('title' => 'Strategy', 'text' => 'We outline a plan with clear priorities and next steps.'),
-  array('title' => 'Ongoing Support', 'text' => 'We stay involved as your business and its obligations evolve.'),
-);
+$pillars  = apex_pillars();
 ?>
 
 <!-- Hero -->
@@ -96,9 +83,7 @@ $steps = array(
 <section class="py-20 lg:py-28">
   <div class="apex-container grid gap-12 lg:grid-cols-12 lg:items-center">
     <div class="lg:col-span-4" data-reveal="left">
-      <p class="apex-eyebrow flex items-center gap-4 text-apex-sky">
-        Our Services <span class="h-px w-16 bg-apex-sky" data-reveal="line" style="--reveal-delay:300ms" aria-hidden="true"></span>
-      </p>
+      <?php echo apex_eyebrow('Our Services'); ?>
       <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl">
         Comprehensive Financial Solutions for Your Business
       </h2>
@@ -128,45 +113,14 @@ $steps = array(
 </section>
 
 <!-- Why APEX + How we work -->
-<section class="bg-apex-navy py-20 text-white lg:py-28">
-  <div class="apex-container">
-    <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
-      <div class="lg:col-span-7" data-reveal>
-        <p class="apex-eyebrow text-apex-mist">Why APEX?</p>
-        <h2 class="mt-5 text-3xl leading-tight font-light sm:text-4xl lg:text-5xl">
-          We don’t just prepare taxes.
-          <span class="block font-semibold">We build the financial structure that protects everything you’ve built.</span>
-        </h2>
-      </div>
-      <p class="leading-relaxed text-white/75 lg:col-span-5" data-reveal style="--reveal-delay:150ms">
-        Planning, visibility, compliance and advisory work together, so the decisions you make today support where you want your business to be tomorrow.
-      </p>
-    </div>
-
-    <div class="relative mt-16 pt-12">
-      <span class="absolute inset-x-0 top-0 h-px bg-white/15" data-reveal="line" aria-hidden="true"></span>
-      <h3 class="apex-eyebrow text-apex-mist" data-reveal="fade">How we work</h3>
-      <ol data-reveal-stagger="140" class="mt-8 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-        <?php foreach ($steps as $i => $step) : ?>
-          <li data-reveal>
-            <span class="font-display text-4xl font-light text-apex-mist/70"><?php echo esc_html(sprintf('%02d', $i + 1)); ?></span>
-            <h4 class="mt-4 text-lg font-medium"><?php echo esc_html($step['title']); ?></h4>
-            <p class="mt-2 text-sm leading-relaxed text-white/70"><?php echo esc_html($step['text']); ?></p>
-          </li>
-        <?php endforeach; ?>
-      </ol>
-    </div>
-  </div>
-</section>
+<?php get_template_part('template-parts/how-we-work'); ?>
 
 <!-- Team preview -->
 <section class="py-20 lg:py-28">
   <div class="apex-container">
     <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
       <div class="max-w-2xl" data-reveal>
-        <p class="apex-eyebrow flex items-center gap-4 text-apex-sky">
-          Our Team <span class="h-px w-16 bg-apex-sky" data-reveal="line" style="--reveal-delay:300ms" aria-hidden="true"></span>
-        </p>
+        <?php echo apex_eyebrow('Our Team'); ?>
         <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl">Meet the people behind APEX</h2>
         <p class="mt-4 leading-relaxed text-apex-ink/70">
           An experienced team guiding clients toward greater clarity, confidence, and financial success.
@@ -180,18 +134,7 @@ $steps = array(
 
     <ul data-reveal-stagger="120" class="mt-14 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4">
       <?php foreach ($team as $member) : ?>
-        <li class="group text-center" data-reveal>
-          <?php if ($member['photo']) : ?>
-            <?php
-            echo apex_media_img(apex_team_media_key($member), 'medium', array(
-              'sizes' => '(min-width: 640px) 160px, 128px',
-              'class' => 'mx-auto size-32 rounded-full bg-apex-smoke object-cover ring-1 ring-apex-line origin-bottom transition duration-500 ease-apex group-hover:scale-120 group-hover:ring-4 group-hover:ring-apex-mist sm:size-40',
-            ));
-            ?>
-          <?php endif; ?>
-          <h3 class="mt-5 text-lg font-medium text-apex-navy"><?php echo esc_html($member['name']); ?></h3>
-          <p class="mt-1 text-sm text-apex-ink/70"><?php echo esc_html($member['title']); ?></p>
-        </li>
+        <?php get_template_part('template-parts/team-member', null, array('member' => $member)); ?>
       <?php endforeach; ?>
     </ul>
   </div>
@@ -202,9 +145,7 @@ $steps = array(
   <div class="apex-container grid gap-12 lg:grid-cols-12 lg:gap-16">
     <div class="lg:col-span-4">
       <div class="lg:sticky lg:top-32" data-reveal="left">
-        <p class="apex-eyebrow flex items-center gap-4 text-apex-sky">
-          FAQs <span class="h-px w-16 bg-apex-sky" data-reveal="line" style="--reveal-delay:300ms" aria-hidden="true"></span>
-        </p>
+        <?php echo apex_eyebrow('FAQs'); ?>
         <h2 id="faq-heading" class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl">Frequently Asked Questions</h2>
         <p class="mt-5 leading-relaxed text-apex-ink/70">
           Answers to common questions about working with APEX. Don’t see yours? Our team is happy to help.
@@ -232,45 +173,6 @@ $steps = array(
   </div>
 </section>
 
-<!-- Final CTA -->
-<section class="bg-apex-cloud py-20 lg:py-24">
-  <div class="apex-container">
-    <div data-reveal="zoom" class="grid gap-10 rounded-2xl bg-apex-night px-6 py-12 text-white sm:px-12 lg:grid-cols-12 lg:items-center lg:px-16 lg:py-16">
-      <div class="lg:col-span-7" data-reveal style="--reveal-delay:200ms">
-        <h2 class="text-3xl leading-tight font-light sm:text-4xl">
-          Let’s review the structure <span class="font-semibold">behind your business.</span>
-        </h2>
-        <p class="mt-5 max-w-xl leading-relaxed text-white/75">
-          Schedule a private strategy session with our team to talk through where your business stands today and where you want it to go.
-        </p>
-        <div class="mt-8 flex flex-col gap-4 sm:flex-row">
-          <a href="<?php echo esc_url($contact['strategyUrl']); ?>" class="apex-btn bg-white text-apex-navy hover:bg-apex-mist" data-track="cta_strategy_session">
-            <?php echo apex_icon('calendar', 'size-5'); ?>
-            Schedule a Strategy Session
-          </a>
-          <a href="<?php echo esc_attr($contact['phoneHref']); ?>" class="apex-btn-outline-light" data-track="click_to_call">
-            <?php echo apex_icon('phone', 'size-5'); ?>
-            <?php echo esc_html($contact['phone']); ?>
-          </a>
-        </div>
-      </div>
-
-      <address data-reveal="right" style="--reveal-delay:350ms" class="space-y-5 border-t border-white/15 pt-10 not-italic lg:col-span-5 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-12">
-        <a href="mailto:<?php echo esc_attr($contact['email']); ?>" class="flex items-start gap-4 text-white/80 hover:text-white" data-track="email_click">
-          <span class="text-apex-mist"><?php echo apex_icon('mail', 'size-6'); ?></span>
-          <span class="break-all"><?php echo esc_html($contact['email']); ?></span>
-        </a>
-        <a href="<?php echo esc_url($contact['mapsUrl']); ?>" target="_blank" rel="noopener noreferrer" class="flex items-start gap-4 text-white/80 hover:text-white">
-          <span class="text-apex-mist"><?php echo apex_icon('map-pin', 'size-6'); ?></span>
-          <span>
-            <?php echo esc_html($contact['street']); ?><br>
-            <?php echo esc_html($contact['city'] . ', ' . $contact['region'] . ' ' . $contact['postalCode']); ?>
-            <span class="sr-only">(opens Google Maps in a new tab)</span>
-          </span>
-        </a>
-      </address>
-    </div>
-  </div>
-</section>
+<?php get_template_part('template-parts/final-cta'); ?>
 
 <?php get_footer();
