@@ -3,14 +3,17 @@
 require_once get_theme_file_path('/inc/site-data.php');
 require_once get_theme_file_path('/inc/media.php');
 require_once get_theme_file_path('/inc/pages.php');
+require_once get_theme_file_path('/inc/seo.php');
+require_once get_theme_file_path('/inc/tracking.php');
 require_once get_theme_file_path('/inc/contact-form.php');
+require_once get_theme_file_path('/inc/backups.php');
 
 function apex_load_assets() {
   $asset = include get_theme_file_path('/build/index.asset.php');
 
   wp_enqueue_style(
     'apex-fonts',
-    'https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap',
+    'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400..700&display=swap',
     array(),
     null
   );
@@ -56,6 +59,7 @@ function apex_schema() {
   $schema = array(
     '@context'  => 'https://schema.org',
     '@type'     => 'AccountingService',
+    '@id'       => home_url('/#organization'),
     'name'      => $c['name'],
     'url'       => home_url('/'),
     'logo'      => apex_media_url('logo-black'),

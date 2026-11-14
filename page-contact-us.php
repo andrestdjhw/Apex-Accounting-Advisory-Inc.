@@ -11,7 +11,8 @@ get_header();
 $contact = apex_contact();
 
 get_template_part('template-parts/page-hero', null, array(
-  'title'   => 'Contact Us',
+  'title'   => apex_pages()['contact-us']['heading'],
+  'crumb'   => 'Contact Us',
   'eyebrow' => 'Private Strategy Session',
   'intro'   => 'Schedule a strategy session and discover how APEX can strengthen your financial foundation.',
 ));
@@ -27,9 +28,9 @@ $cards = array(
   <div class="apex-container grid gap-12 lg:grid-cols-12 lg:gap-16">
     <!-- Contact details -->
     <div class="lg:col-span-5">
-      <div data-reveal="left">
-        <?php echo apex_eyebrow('Get in touch'); ?>
-        <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl" data-split>Let’s talk about your business</h2>
+      <div data-reveal>
+        <p class="apex-eyebrow text-apex-sky">Get in touch</p>
+        <h2 class="mt-4 text-3xl leading-tight font-semibold text-apex-ink sm:text-4xl">Let’s talk about your business</h2>
         <p class="mt-5 leading-relaxed text-apex-ink/70">Tell us a little about your company and when you’d like to begin. A member of our team will follow up to schedule your private strategy session.</p>
       </div>
 
@@ -37,22 +38,22 @@ $cards = array(
         <?php foreach ($cards as $card) : ?>
           <a
             href="<?php echo esc_attr($card['href']); ?>"
-            class="group flex items-start gap-5 rounded-xl border border-apex-line p-5 transition duration-200 hover:border-apex-mist hover:bg-apex-cloud/60"
+            class="group flex items-start gap-5 border border-apex-line p-5 transition-colors duration-200 hover:border-apex-navy"
             data-track="<?php echo esc_attr($card['track']); ?>"
             data-reveal
             <?php if (!empty($card['external'])) : ?>target="_blank" rel="noopener noreferrer"<?php endif; ?>
           >
-            <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-apex-navy text-white transition-transform duration-300 group-hover:scale-110"><?php echo apex_icon($card['icon'], 'size-5'); ?></span>
+            <span class="flex size-12 shrink-0 items-center justify-center bg-apex-navy text-white"><?php echo apex_icon($card['icon'], 'size-5'); ?></span>
             <span>
-              <span class="block font-display text-xs font-medium tracking-[0.2em] text-apex-sky uppercase"><?php echo esc_html($card['label']); ?></span>
-              <span class="mt-1 block break-words text-lg text-apex-navy"><?php echo esc_html($card['value']); ?></span>
+              <span class="apex-eyebrow block text-apex-ink/55"><?php echo esc_html($card['label']); ?></span>
+              <span class="mt-1 block break-words text-lg font-semibold text-apex-navy"><?php echo esc_html($card['value']); ?></span>
               <?php if (!empty($card['external'])) : ?><span class="sr-only">(opens Google Maps in a new tab)</span><?php endif; ?>
             </span>
           </a>
         <?php endforeach; ?>
       </address>
 
-      <div class="mt-8 rounded-xl bg-apex-night p-6 text-white" data-reveal>
+      <div class="mt-8 bg-apex-night p-6 text-white" data-reveal>
         <div class="flex items-start gap-4">
           <span class="text-apex-mist"><?php echo apex_icon('user', 'size-6'); ?></span>
           <div>
@@ -70,8 +71,8 @@ $cards = array(
 
     <!-- Strategy Session form -->
     <div class="lg:col-span-7">
-      <div id="strategy-session" class="scroll-mt-28 rounded-2xl bg-white p-6 shadow-xl shadow-apex-night/5 ring-1 ring-apex-line sm:p-10" data-reveal="right">
-        <h2 class="text-2xl font-medium text-apex-navy sm:text-3xl">Schedule Your Private Strategy Session</h2>
+      <div id="strategy-session" class="scroll-mt-28 border border-apex-line bg-white p-6 sm:p-10" data-reveal>
+        <h2 class="text-2xl font-semibold text-apex-ink sm:text-3xl">Schedule your private strategy session</h2>
         <p class="mt-3 text-sm leading-relaxed text-apex-ink/70">Fields marked with <span class="text-apex-sky" aria-hidden="true">*</span><span class="sr-only">an asterisk</span> are required.</p>
 
         <div id="apex-contact-form" class="mt-8">
@@ -97,7 +98,7 @@ $cards = array(
   <iframe
     src="<?php echo esc_url($contact['mapsEmbed']); ?>"
     title="<?php echo esc_attr('Map showing the ' . $contact['name'] . ' office in ' . $contact['city'] . ', ' . $contact['region']); ?>"
-    class="absolute inset-0 size-full border-0 grayscale-60 transition duration-500 hover:grayscale-0"
+    class="absolute inset-0 size-full border-0"
     loading="lazy"
     referrerpolicy="no-referrer-when-downgrade"
     allowfullscreen

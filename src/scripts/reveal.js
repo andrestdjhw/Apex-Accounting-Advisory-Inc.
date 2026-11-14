@@ -1,17 +1,14 @@
-// Lightweight scroll animations (no dependencies).
-//  - [data-reveal="up|fade|left|right|zoom|line"]  animates every time it enters the viewport
-//                                                   and resets once it has fully left it
-//  - [data-reveal="curtain"]                       image/panel uncovered bottom-up (clip-path)
-//  - [data-split]                                   headline words rise one by one (split in motion.js)
-//  - [data-reveal-stagger="90"] on a parent          staggers its [data-reveal] children (ms)
-//  - [data-replay]                                   restarts the CSS animations inside it
-//                                                   (e.g. the hero entrance) when it comes back into view
-//  - [data-parallax="0.15"]                          subtle vertical parallax (transform only)
+// Scroll animations (no dependencies). Everything replays when it comes back into view.
+//  - [data-reveal="up|fade|left|right|zoom|line|curtain"]  enters when in view, resets once fully out
+//  - [data-rule]                 its top rule draws itself in (element with border-t)
+//  - [data-count="120"]          counts up from 0 each time it enters (data-suffix="+" optional)
+//  - [data-reveal-stagger="90"]  on a parent: staggers its [data-reveal] children (ms)
+//  - [data-replay]               restarts CSS animations inside it when it comes back into view
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
 
 let enterObserver = null // reveals once the element is meaningfully on screen
-let exitObserver = null // resets only when it is completely off screen (avoids flicker at the edges)
+let exitObserver = null // resets only when it is completely off screen (no flicker at the edges)
 
 function applyStagger(root) {
   root.querySelectorAll("[data-reveal-stagger]").forEach(parent => {
@@ -26,7 +23,7 @@ function applyStagger(root) {
 
 export function scanReveal(root = document) {
   applyStagger(root)
-  const items = root.querySelectorAll("[data-reveal], [data-split]:not([data-split='load'])")
+  const items = root.querySelectorAll("[data-reveal], [data-rule], [data-count]")
 
   if (!enterObserver || reduceMotion.matches) {
     items.forEach(el => el.classList.add("is-visible"))
@@ -36,6 +33,22 @@ export function scanReveal(root = document) {
     enterObserver.observe(el)
     exitObserver.observe(el)
   })
+}
+
+// Figures: 0 → value with an ease-out, tabular digits keep the width steady.
+function countUp(el) {
+  const end = parseFloat(el.dataset.count) || 0
+  const suffix = el.dataset.suffix || ""
+  const duration = 1600
+  const start = performance.now()
+  const tick = now => {
+    if (!el.classList.contains("is-visible")) return
+    const t = Math.min(1, (now - start) / duration)
+    const eased = 1 - Math.pow(1 - t, 3)
+    el.textContent = Math.round(end * eased).toLocaleString("en-US") + suffix
+    if (t < 1) requestAnimationFrame(tick)
+  }
+  requestAnimationFrame(tick)
 }
 
 function restartAnimations(el) {
@@ -66,34 +79,6 @@ function initReplay() {
   items.forEach(el => observer.observe(el))
 }
 
-function initParallax() {
-  const items = [...document.querySelectorAll("[data-parallax]")]
-  if (!items.length || reduceMotion.matches) return
-
-  let ticking = false
-  const update = () => {
-    items.forEach(el => {
-      const speed = parseFloat(el.dataset.parallax) || 0.15
-      const rect = el.parentElement.getBoundingClientRect()
-      if (rect.bottom < 0 || rect.top > window.innerHeight) return
-      el.style.transform = `translate3d(0, ${(-rect.top * speed).toFixed(1)}px, 0)`
-    })
-    ticking = false
-  }
-
-  window.addEventListener(
-    "scroll",
-    () => {
-      if (!ticking) {
-        ticking = true
-        requestAnimationFrame(update)
-      }
-    },
-    { passive: true }
-  )
-  update()
-}
-
 export function initReveal() {
   document.documentElement.classList.add("reveal-ready")
 
@@ -101,16 +86,22 @@ export function initReveal() {
     enterObserver = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) entry.target.classList.add("is-visible")
+          if (entry.isIntersecting && !entry.target.classList.contains("is-visible")) {
+            entry.target.classList.add("is-visible")
+            if (entry.target.dataset.count) countUp(entry.target)
+          }
         })
       },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.12 }
+      { rootMargin: "0px 0px -8% 0px", threshold: 0 }
     )
 
     exitObserver = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
-          if (!entry.isIntersecting) entry.target.classList.remove("is-visible")
+          if (!entry.isIntersecting) {
+            entry.target.classList.remove("is-visible")
+            if (entry.target.dataset.count) entry.target.textContent = "0" + (entry.target.dataset.suffix || "")
+          }
         })
       },
       { threshold: 0 }
@@ -119,5 +110,4 @@ export function initReveal() {
 
   scanReveal()
   initReplay()
-  initParallax()
 }

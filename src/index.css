@@ -2,37 +2,46 @@
 @plugin "@tailwindcss/typography";
 
 /*
- * APEX brand tokens — taken from the live site's Breakdance global palette and
- * fonts (Geologica for headings, Open Sans for body). Don't invent new colors here.
+ * APEX executive direction (approved proposal, Nov 2026):
+ * carbón + Apex navy with one sober accent (brass), Source Serif 4 for headings,
+ * Inter for text, square corners and 1px rules, opacity-only motion.
+ *
+ * Token names are kept from the first build so existing markup maps onto the new
+ * palette: `apex-sky` is now the single accent (brass), `apex-cloud` the stone fill.
  */
 @theme {
-  --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Geologica", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
 
-  --color-apex-ink: #0a0a0c;
-  --color-apex-night: #0d1b28;
-  --color-apex-navy: #204262;
-  --color-apex-blue: #2d5c88;
-  --color-apex-sky: #3a76ae;
-  --color-apex-mist: #d7e3ee;
-  --color-apex-cloud: #ebf1f6;
-  --color-apex-smoke: #f5f5f5;
-  --color-apex-line: #ebebeb;
+  --color-apex-ink: #14181f; /* carbón: text */
+  --color-apex-night: #121b26; /* dark bands */
+  --color-apex-navy: #204262; /* Apex brand blue */
+  --color-apex-blue: #2b5279; /* navy, hover */
+  --color-apex-sky: #8a6b3d; /* the one accent (brass) */
+  --color-apex-brass: #8a6b3d;
+  --color-apex-gold: #c9a56c; /* accent on dark backgrounds */
+  --color-apex-mist: #d8dde4; /* light text / rules on dark */
+  --color-apex-cloud: #f2f4f7; /* stone: section fills */
+  --color-apex-smoke: #f7f8fa;
+  --color-apex-line: #d8dde4; /* 1px rules */
+
+  /* Square corners everywhere (rounded-full stays for dots and switches). */
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --radius-3xl: 0;
+
+  /* Labels never below 13px. */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.45;
 
   --ease-apex: cubic-bezier(0.22, 1, 0.36, 1);
-  --animate-rise: apex-rise 0.9s var(--ease-apex) both;
+  --animate-rise: apex-rise 0.7s var(--ease-apex) both;
+  /* Hero photo: slow zoom-out on load (replays when the hero comes back into view). */
   --animate-hero-zoom: apex-hero-zoom 2.2s var(--ease-apex) both;
-
-  @keyframes apex-rise {
-    from {
-      opacity: 0;
-      transform: translate3d(0, 24px, 0);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
 
   @keyframes apex-hero-zoom {
     from {
@@ -42,158 +51,159 @@
       transform: scale(1);
     }
   }
+
+  @keyframes apex-rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 22px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Hairline rule drawing from the left (brass line under hero titles). */
+  --animate-draw: apex-draw 1s var(--ease-apex) both;
+  @keyframes apex-draw {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
 }
 
 /*
- * Scroll reveal (driven by src/scripts/reveal.js).
- * Elements are only hidden when JS is running (html.js), so content never
- * stays invisible without it. Variants: up (default), fade, left, right, zoom, line.
+ * "Magic hat" entrance for the hero form: after the hero text has landed, a brass
+ * brim flashes across, then the panel pops up out of it, stretches a little past
+ * its size and settles with a small bounce. Replays with the hero ([data-replay]).
+ * The animation runs on the glass panel itself so backdrop-filter keeps working.
+ */
+.apex-magic {
+  transform-origin: 50% 100%;
+  animation: apex-magic 1.15s cubic-bezier(0.2, 0.9, 0.25, 1) 1.15s both;
+}
+@keyframes apex-magic {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 56px, 0) scale(0.5, 0.06);
+    clip-path: inset(90% 0 0 0);
+  }
+  45% {
+    opacity: 1;
+    transform: translate3d(0, -14px, 0) scale(1.02, 1.07);
+    clip-path: inset(-80px);
+  }
+  70% {
+    transform: translate3d(0, 4px, 0) scale(0.995, 0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(-80px);
+  }
+}
+.apex-magic-brim {
+  opacity: 0;
+  transform-origin: 50% 50%;
+  animation: apex-brim 1.1s ease-out 1s both;
+}
+@keyframes apex-brim {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  35% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(1.15);
+  }
+}
+
+/*
+ * Scroll reveal (src/scripts/reveal.js). Every element replays when it comes back
+ * into view (the class is removed once it is fully off screen).
+ * Variants: up (default) · fade · left · right · zoom · line · curtain.
+ * Elements are only hidden when JS is running (html.js), so content never stays
+ * invisible without it.
  */
 html.js [data-reveal] {
-  --reveal-from: translate3d(0, 32px, 0);
+  --reveal-from: translate3d(0, 28px, 0);
   opacity: 0;
   transform: var(--reveal-from);
   transition:
     opacity 0.8s var(--ease-apex),
     transform 0.9s var(--ease-apex);
   transition-delay: var(--reveal-delay, 0ms);
-  will-change: opacity, transform;
 }
 html.js [data-reveal="fade"] { --reveal-from: none; }
-html.js [data-reveal="left"] { --reveal-from: translate3d(-48px, 0, 0); }
-html.js [data-reveal="right"] { --reveal-from: translate3d(48px, 0, 0); }
-html.js [data-reveal="zoom"] { --reveal-from: scale(0.92); }
+html.js [data-reveal="left"] { --reveal-from: translate3d(-36px, 0, 0); }
+html.js [data-reveal="right"] { --reveal-from: translate3d(36px, 0, 0); }
+html.js [data-reveal="zoom"] { --reveal-from: scale(0.96); }
+html.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hairline that draws itself from the left. */
 html.js [data-reveal="line"] {
   --reveal-from: scaleX(0);
   opacity: 1;
   transform-origin: left center;
-}
-html.js [data-reveal].is-visible {
-  opacity: 1;
-  transform: none;
-  will-change: auto;
+  transition: transform 1.1s var(--ease-apex);
+  transition-delay: var(--reveal-delay, 0ms);
 }
 
-/* Curtain: the block is uncovered bottom-up while the image settles from a zoom. */
-/* The clip goes on the child: IntersectionObserver ignores a fully clipped target. */
+/* Sections whose top rule draws itself in ([data-rule] on an element with border-t). */
+html.js [data-rule] {
+  position: relative;
+  border-top-color: transparent;
+}
+html.js [data-rule]::before {
+  content: "";
+  position: absolute;
+  inset: -1px 0 auto;
+  height: 1px;
+  background: var(--rule-color, var(--color-apex-ink));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1.2s var(--ease-apex);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+html.js [data-rule].is-visible::before {
+  transform: scaleX(1);
+}
+
+/* Curtain: photos are uncovered bottom-up while they settle from a slight zoom.
+   The clip goes on the child: IntersectionObserver ignores a fully clipped target. */
 html.js [data-reveal="curtain"] {
   --reveal-from: none;
   opacity: 1;
 }
 html.js [data-reveal="curtain"] > * {
   clip-path: inset(100% 0 0 0);
-  transition: clip-path 1.4s cubic-bezier(0.86, 0, 0.14, 1);
+  transition: clip-path 1.2s cubic-bezier(0.77, 0, 0.18, 1);
   transition-delay: var(--reveal-delay, 0ms);
 }
 html.js [data-reveal="curtain"].is-visible > * {
   clip-path: inset(0);
 }
 html.js [data-reveal="curtain"] img {
-  transform: scale(1.3);
-  transition:
-    transform 2s var(--ease-apex) calc(var(--reveal-delay, 0ms) + 200ms),
-    scale 0.7s var(--ease-apex);
+  transform: scale(1.12);
+  transition: transform 1.8s var(--ease-apex) calc(var(--reveal-delay, 0ms) + 150ms);
 }
 html.js [data-reveal="curtain"].is-visible img {
   transform: none;
 }
 
-/*
- * Word-by-word headlines (words are wrapped by src/scripts/motion.js).
- * [data-split] plays when scrolled into view, [data-split="load"] on page load.
- */
-.apex-w {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: top;
-  /* room for descenders inside the mask */
-  padding-bottom: 0.22em;
-  margin-bottom: -0.22em;
-}
-.apex-w__i {
-  display: inline-block;
-}
-html.js [data-split]:not([data-split="load"]) .apex-w__i {
-  transform: translate3d(0, 110%, 0);
-  transition: transform 1s var(--ease-apex);
-  transition-delay: calc(var(--reveal-delay, 0ms) + var(--w, 0) * 35ms);
-}
-html.js [data-split].is-visible .apex-w__i {
-  transform: none;
-}
-html.js [data-split="load"]:not(.is-split) {
-  opacity: 0;
-}
-html.js [data-split="load"] .apex-w__i {
-  animation: apex-word 1.1s var(--ease-apex) both;
-  animation-delay: calc(var(--split-delay, 150ms) + var(--w, 0) * 45ms);
-}
-@keyframes apex-word {
-  from {
-    transform: translate3d(0, 115%, 0);
-  }
-  to {
-    transform: none;
-  }
-}
-
-/* Words that light up on scroll: opacity is set inline per word. */
-[data-scrub] .apex-w__i {
-  transition: opacity 0.25s linear;
-}
-
-/* 3D tilt + soft light following the cursor (src/scripts/motion.js sets the vars). */
-.apex-tilt {
-  position: relative;
-  transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translate3d(0, var(--tilt-lift, 0px), 0);
-  transition:
-    transform 0.7s var(--ease-apex),
-    box-shadow 0.3s ease,
-    background-color 0.2s ease,
-    border-color 0.2s ease;
-}
-.apex-tilt:hover {
-  --tilt-lift: -6px;
-}
-.apex-tilt::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 0%), color-mix(in oklab, var(--color-apex-sky) 16%, transparent), transparent 60%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-.apex-tilt:hover::after {
-  opacity: 1;
-}
-
-/* Stacked process cards: --stack (0 → 1) is set by initStack() as the next card arrives. */
-.apex-stack-card {
-  transform-origin: center top;
-  transform: scale(calc(1 - var(--stack, 0) * 0.08));
-  filter: brightness(calc(1 - var(--stack, 0) * 0.35)) blur(calc(var(--stack, 0) * 1.5px));
-  will-change: transform, filter;
-}
-
-/* Lenis smooth scroll (recommended base styles). */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-.lenis.lenis-stopped {
-  overflow: clip;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  html.js [data-reveal] {
+  html.js [data-reveal],
+  html.js [data-reveal="curtain"] img {
     opacity: 1;
     transform: none;
     transition: none;
@@ -201,16 +211,11 @@ html.lenis body {
   html.js [data-reveal="curtain"] > * {
     clip-path: none;
   }
-  html.js [data-reveal="curtain"] img {
-    transform: none;
+  html.js [data-rule] {
+    border-top-color: var(--rule-color, var(--color-apex-ink));
   }
-  html.js [data-split="load"]:not(.is-split) {
-    opacity: 1;
-  }
-  .apex-tilt,
-  .apex-tilt:hover {
-    --tilt-lift: 0px;
-    transform: none;
+  html.js [data-rule]::before {
+    display: none;
   }
   .motion-safe-only {
     animation: none !important;
@@ -230,11 +235,18 @@ html.lenis body {
   }
 
   body {
-    @apply bg-white font-sans text-apex-ink antialiased;
+    @apply bg-white font-sans text-[17px] leading-relaxed text-apex-ink antialiased;
+  }
+
+  /* Off-screen start positions of entrance animations must never create a sideways scroll.
+     clip (not hidden) keeps position: sticky working inside. */
+  main {
+    overflow-x: clip;
   }
 
   h1, h2, h3, h4 {
-    @apply font-display;
+    @apply font-display text-balance;
+    font-optical-sizing: auto;
   }
 
   :focus-visible {
@@ -243,27 +255,110 @@ html.lenis body {
 }
 
 @utility apex-container {
-  @apply mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12;
+  @apply mx-auto w-full max-w-[1378px] px-3.5 sm:px-[15px] lg:px-[22px];
 }
 
+/* Section label: 13px, uppercase, a little tracking. */
 @utility apex-eyebrow {
-  @apply font-display text-xs font-medium tracking-[0.3em] uppercase;
+  @apply font-sans text-[13px] font-semibold tracking-[0.12em] uppercase;
+}
+
+/* Figures that line up in columns. */
+@utility apex-figure {
+  @apply font-display font-semibold tabular-nums lining-nums;
 }
 
 @utility apex-btn {
-  @apply inline-flex min-h-12 items-center justify-center gap-2.5 rounded-md px-6 font-display text-[15px] font-medium transition-colors duration-200;
+  @apply inline-flex min-h-12 items-center justify-center gap-2.5 px-6 font-sans text-[15px] font-semibold transition-colors duration-200;
 }
 
 @utility apex-btn-primary {
-  @apply apex-btn bg-apex-navy text-white hover:bg-apex-sky;
+  @apply apex-btn bg-apex-navy text-white hover:bg-apex-ink;
 }
 
 @utility apex-btn-outline-light {
-  @apply apex-btn border border-white/70 text-white hover:bg-white hover:text-apex-navy;
+  @apply apex-btn border border-white/60 text-white hover:bg-white hover:text-apex-navy;
 }
 
 @utility apex-btn-outline {
   @apply apex-btn border border-apex-navy text-apex-navy hover:bg-apex-navy hover:text-white;
+}
+
+/*
+ * Marked placeholder for content that depends on APEX/828 (figures, credentials,
+ * photos, bios, reviews…). Visible on staging on purpose; must be empty at launch.
+ */
+@utility apex-pending {
+  @apply inline-block border border-dashed border-amber-600 bg-amber-50 px-2 py-0.5 font-sans text-[13px] leading-snug font-medium text-amber-900;
+}
+
+/*
+ * CTA hover (adapted from Uiverse btn-31 by doniaskima): a brass fill wipes in
+ * diagonally from the bottom-right corner while the label drops out and comes
+ * back in from the top. Markup: .apex-cta > .apex-cta__label > .apex-cta__text.
+ */
+.apex-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    color 0.25s ease 0.05s,
+    border-color 0.25s ease;
+}
+.apex-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-apex-brass);
+  clip-path: polygon(100% 100%, 100% 100%, 100% 100%);
+  transition: clip-path 0.45s var(--ease-apex);
+}
+.apex-cta:hover,
+.apex-cta:focus-visible {
+  color: #fff;
+  border-color: var(--color-apex-brass);
+}
+.apex-cta:hover::before,
+.apex-cta:focus-visible::before {
+  clip-path: polygon(100% 100%, -100% 100%, 100% -100%);
+}
+.apex-cta:disabled::before {
+  display: none;
+}
+.apex-cta__label {
+  display: inline-flex;
+  overflow: hidden;
+}
+.apex-cta__text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+.apex-cta:hover .apex-cta__text {
+  animation: apex-cta-flip 0.35s ease forwards;
+}
+@keyframes apex-cta-flip {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(110%);
+  }
+  51% {
+    transform: translateY(-110%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .apex-cta::before {
+    transition: none;
+  }
+  .apex-cta:hover .apex-cta__text {
+    animation: none;
+  }
 }
 
 /* FAQ accordion: smooth open/close where supported (Chrome 131+), instant elsewhere. */
@@ -276,9 +371,9 @@ html.lenis body {
   overflow: hidden;
   opacity: 0;
   transition:
-    block-size 0.45s var(--ease-apex),
-    opacity 0.35s var(--ease-apex),
-    content-visibility 0.45s allow-discrete;
+    block-size 0.35s var(--ease-apex),
+    opacity 0.3s var(--ease-apex),
+    content-visibility 0.35s allow-discrete;
 }
 
 .apex-faq[open]::details-content {

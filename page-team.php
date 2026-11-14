@@ -1,48 +1,47 @@
 <?php
 /**
- * Team (brief §5.4). Directory as published on /team/.
- * PENDING CLIENT VALIDATION: names, titles and credentials. Person schema is
- * intentionally not output until APEX confirms each title.
+ * Team: partners row (formal portraits, credentials, bios) + full directory.
+ * Titles, credentials and bios pending verification by 828 / Laura; Person
+ * schema only includes confirmed titles (inc/seo.php).
  */
 
 get_header();
 
+$staff = array_values(array_filter(apex_team(), function ($m) {
+  return empty($m['leadership']);
+}));
+
 get_template_part('template-parts/page-hero', null, array(
-  'title'   => 'Team',
+  'title'   => apex_pages()['team']['heading'],
+  'crumb'   => 'Team',
   'eyebrow' => 'Our people',
-  'intro'   => 'Learn about the experienced team guiding clients toward greater clarity, confidence, and financial success.',
+  'intro'   => 'Tax, accounting, advisory and client service professionals working together on every engagement.',
 ));
 ?>
 
-<section class="py-20 lg:py-28">
+<section class="py-20 lg:py-24" aria-labelledby="partners-title">
   <div class="apex-container">
     <div class="max-w-2xl" data-reveal>
-      <?php echo apex_eyebrow('Meet the team'); ?>
-      <h2 class="mt-5 text-3xl leading-tight font-medium text-apex-navy sm:text-4xl" data-split>The people behind your financial structure</h2>
-      <p class="mt-5 leading-relaxed text-apex-ink/70">Tax, accounting, advisory and client service professionals working together on every engagement.</p>
+      <p class="apex-eyebrow text-apex-sky">Leadership</p>
+      <h2 id="partners-title" class="mt-4 text-3xl leading-tight font-semibold text-apex-ink sm:text-4xl">Partners</h2>
     </div>
-
-    <ul class="mt-16 grid grid-cols-2 gap-x-6 gap-y-14 md:grid-cols-3 lg:grid-cols-4" data-reveal-stagger="80">
-      <?php foreach (apex_team() as $member) : ?>
-        <?php get_template_part('template-parts/team-member', null, array('member' => $member)); ?>
-      <?php endforeach; ?>
-    </ul>
+    <div class="mt-10">
+      <?php get_template_part('template-parts/partners'); ?>
+    </div>
   </div>
 </section>
 
-<section class="bg-apex-navy py-16 text-white lg:py-20">
-  <div class="apex-container flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+<section class="border-t border-apex-line bg-apex-cloud py-20 lg:py-24" aria-labelledby="team-title">
+  <div class="apex-container">
     <div class="max-w-2xl" data-reveal>
-      <h2 class="text-3xl leading-tight font-light sm:text-4xl" data-split>Work with a team that <span class="font-semibold">knows your business.</span></h2>
-      <p class="mt-4 leading-relaxed text-white/75">See how our services fit together, or learn more about the values that guide our work.</p>
+      <p class="apex-eyebrow text-apex-sky">The team</p>
+      <h2 id="team-title" class="mt-4 text-3xl leading-tight font-semibold text-apex-ink sm:text-4xl">Tax, accounting and client service</h2>
     </div>
-    <div class="flex flex-col gap-4 sm:flex-row" data-reveal="right">
-      <a href="<?php echo esc_url(home_url('/services/')); ?>" class="apex-btn bg-white text-apex-navy hover:bg-apex-mist">
-        Our Services
-        <?php echo apex_icon('arrow-right', 'size-5'); ?>
-      </a>
-      <a href="<?php echo esc_url(home_url('/about-us/')); ?>" class="apex-btn-outline-light">About APEX</a>
-    </div>
+    <ul class="mt-10 grid grid-cols-2 gap-x-6 gap-y-12 border-t border-apex-ink pt-10 md:grid-cols-3 lg:grid-cols-4" data-reveal-stagger="60" data-rule>
+      <?php foreach ($staff as $member) : ?>
+        <?php get_template_part('template-parts/team-member', null, array('member' => $member)); ?>
+      <?php endforeach; ?>
+    </ul>
   </div>
 </section>
 

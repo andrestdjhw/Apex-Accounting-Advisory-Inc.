@@ -16,7 +16,7 @@ while (have_posts()) :
 
   <article class="py-16 lg:py-24">
     <div class="apex-container">
-      <div class="prose prose-lg mx-auto max-w-3xl prose-headings:font-display prose-headings:font-medium prose-headings:text-apex-navy prose-a:text-apex-sky prose-strong:text-apex-navy">
+      <div class="prose prose-lg mx-auto max-w-3xl prose-headings:font-display prose-headings:font-semibold prose-headings:text-apex-ink prose-a:text-apex-navy prose-strong:text-apex-ink" data-reveal>
         <?php the_content(); ?>
       </div>
     </div>

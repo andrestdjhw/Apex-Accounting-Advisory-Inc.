@@ -7,8 +7,7 @@ import HeroForm from "./components/HeroForm"
 import CookieConsent from "./components/CookieConsent"
 import { initReveal } from "./scripts/reveal"
 import { initTracking } from "./scripts/tracking"
-import { initServiceNav } from "./scripts/service-nav"
-import { initMotion } from "./scripts/motion"
+import { initServiceShowcase } from "./scripts/service-showcase"
 
 const site = window.apexSite
 
@@ -24,7 +23,6 @@ mount("apex-footer", Footer)
 mount("apex-contact-form", ContactForm)
 mount("apex-hero-form", HeroForm)
 mount("apex-cookie-consent", CookieConsent)
-initMotion()
 initReveal()
 initTracking()
-initServiceNav()
+initServiceShowcase()

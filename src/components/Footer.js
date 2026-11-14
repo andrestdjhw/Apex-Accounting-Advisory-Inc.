@@ -3,13 +3,13 @@ import Icon from "./Icon"
 import { scanReveal } from "../scripts/reveal"
 
 function FooterHeading({ children }) {
-  return <h2 className="mb-5 font-display text-sm font-medium tracking-[0.2em] text-white uppercase">{children}</h2>
+  return <h2 className="apex-eyebrow mb-5 text-apex-gold">{children}</h2>
 }
 
-const linkClass = "text-sm text-white/70 transition-colors hover:text-white"
+const linkClass = "text-[15px] text-white/75 transition-colors hover:text-white"
 
 export default function Footer({ site }) {
-  const { nav, services, contact, logo, homeUrl, legal } = site
+  const { nav, services, contact, logo, homeUrl, legal, network = [] } = site
   const year = new Date().getFullYear()
   const ref = useRef(null)
 
@@ -22,7 +22,7 @@ export default function Footer({ site }) {
     <footer ref={ref} className="bg-apex-night text-white">
       <div className="apex-container grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-12 lg:gap-8" data-reveal-stagger="100">
         <div className="lg:col-span-4" data-reveal>
-          <a href={homeUrl} aria-label="Apex Accounting Inc. — Home" className="inline-block">
+          <a href={homeUrl} aria-label={`${contact.name} — Home`} className="inline-block">
             <img src={logo.light} alt="Apex Accounting & Advisory" width="1024" height="163" loading="lazy" className="h-8 w-auto" />
           </a>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-white/70">
@@ -30,9 +30,11 @@ export default function Footer({ site }) {
             their financial structure.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href={contact.strategyUrl} className="apex-btn bg-white text-apex-navy hover:bg-apex-mist" data-track="cta_strategy_session">
-              <Icon name="calendar" className="size-5" />
-              Schedule a Strategy Session
+            <a href={contact.strategyUrl} className="apex-cta apex-btn bg-white text-apex-navy" data-track="cta_strategy_session">
+              <span className="apex-cta__label"><span className="apex-cta__text">
+                <Icon name="calendar" className="size-5" />
+                Schedule a Strategy Session
+              </span></span>
             </a>
             <a
               href={contact.portalUrl}
@@ -58,11 +60,6 @@ export default function Footer({ site }) {
                 </a>
               </li>
             ))}
-            <li>
-              <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("apex:cookie-settings"))} className="transition-colors hover:text-white">
-                Cookie Settings
-              </button>
-            </li>
           </ul>
         </nav>
 
@@ -103,8 +100,23 @@ export default function Footer({ site }) {
         </div>
       </div>
 
+      {network.length > 0 && (
+        <div className="border-t border-white/10">
+          <nav aria-label="Related firms" className="apex-container flex flex-wrap items-center gap-x-6 gap-y-2 py-5 text-sm text-white/60">
+            <span className="text-white/45">Also from our network:</span>
+            {network.map(site => (
+              <a key={site.url} href={site.url} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 transition-colors hover:text-white">
+                {site.label}
+                <Icon name="external-link" className="size-3.5" />
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
+            ))}
+          </nav>
+        </div>
+      )}
+
       <div className="border-t border-white/10">
-        <div className="apex-container flex flex-col gap-3 py-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
+        <div className="apex-container flex flex-col gap-3 py-6 text-sm text-white/60 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {contact.name} All rights reserved.
           </p>
@@ -116,6 +128,11 @@ export default function Footer({ site }) {
                 </a>
               </li>
             ))}
+            <li>
+              <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("apex:cookie-settings"))} className="transition-colors hover:text-white">
+                Cookie Settings
+              </button>
+            </li>
           </ul>
         </div>
       </div>

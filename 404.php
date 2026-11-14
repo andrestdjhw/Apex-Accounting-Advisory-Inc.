@@ -10,7 +10,7 @@ get_header();
   <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,var(--color-apex-blue)_0%,transparent_55%)] opacity-60" aria-hidden="true"></div>
   <div class="apex-container py-24 lg:py-32">
     <p class="motion-safe-only animate-rise apex-eyebrow text-apex-mist">Error 404</p>
-    <h1 data-split="load" class="mt-5 max-w-3xl text-4xl leading-[1.08] font-light tracking-tight sm:text-5xl lg:text-6xl">
+    <h1 class="mt-5 max-w-3xl text-4xl leading-[1.1] font-semibold tracking-tight sm:text-5xl">
       We couldn’t find <span class="font-semibold">that page.</span>
     </h1>
     <p class="motion-safe-only animate-rise [animation-delay:240ms] mt-6 max-w-xl text-lg leading-relaxed text-white/80">
@@ -21,9 +21,11 @@ get_header();
         <?php echo apex_icon('home', 'size-5'); ?>
         Back to Home
       </a>
-      <a href="<?php echo esc_url(apex_contact()['strategyUrl']); ?>" class="apex-btn-outline-light" data-track="cta_strategy_session">
-        <?php echo apex_icon('calendar', 'size-5'); ?>
-        Schedule a Strategy Session
+      <a href="<?php echo esc_url(apex_contact()['strategyUrl']); ?>" class="apex-cta apex-btn border border-white/60 text-white" data-track="cta_strategy_session">
+        <span class="apex-cta__label"><span class="apex-cta__text">
+          <?php echo apex_icon('calendar', 'size-5'); ?>
+          Schedule a Strategy Session
+        </span></span>
       </a>
     </div>
   </div>

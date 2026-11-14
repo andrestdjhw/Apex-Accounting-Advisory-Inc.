@@ -3,26 +3,26 @@ import Icon from "./Icon"
 import { EMPTY, validate } from "./ContactForm"
 import { track } from "../scripts/tracking"
 
-// Compact, translucent version of the strategy-session form for the home hero.
-// Same endpoint, validation, honeypot and tracking as ContactForm — only the
-// essential fields (optional ones can be shared later with the team).
+// Compact strategy-session form for the home hero (translucent panel).
+// Same endpoint, validation, honeypot and tracking as ContactForm, with only the
+// essential fields. Its entrance ("magic hat") lives in src/index.css.
 
 const FORM_NAME = "strategy_session_hero"
 
 const inputClass = invalid =>
-  `block w-full rounded-lg border bg-white/10 px-3.5 py-2.5 text-sm text-white placeholder:text-white/45 transition-colors focus:border-white focus:bg-white/15 focus:ring-2 focus:ring-white/25 focus:outline-none ${
+  `block w-full border bg-white/10 px-3.5 py-2.5 text-[15px] text-white placeholder:text-white/45 transition-colors focus:border-white focus:bg-white/15 focus:ring-2 focus:ring-white/25 focus:outline-none ${
     invalid ? "border-red-300" : "border-white/25 hover:border-white/45"
   }`
 
 function Field({ id, label, error, children, className = "" }) {
   return (
     <div className={className}>
-      <label htmlFor={id} className="mb-1.5 block text-xs font-medium tracking-wide text-white/85">
+      <label htmlFor={id} className="mb-1.5 block text-[13px] font-medium tracking-wide text-white/85">
         {label}
       </label>
       {children}
       {error && (
-        <p id={`${id}-error`} className="mt-1.5 flex items-center gap-1.5 text-xs text-red-200">
+        <p id={`${id}-error`} className="mt-1.5 flex items-center gap-1.5 text-[13px] text-red-200">
           <Icon name="alert-circle" className="size-3.5 shrink-0" strokeWidth={2} />
           {error}
         </p>
@@ -110,14 +110,14 @@ export default function HeroForm({ site }) {
   if (status === "success") {
     return (
       <div ref={successRef} tabIndex={-1} role="status" className="py-10 text-center outline-none">
-        <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-white text-apex-navy">
+        <span className="mx-auto flex size-14 items-center justify-center bg-white text-apex-navy">
           <Icon name="check" className="size-7" strokeWidth={2} />
         </span>
-        <h2 className="mt-5 font-display text-2xl font-medium">Thank you, {values.first_name}.</h2>
-        <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-white/80">
+        <h2 className="mt-5 font-display text-2xl font-semibold">Thank you, {values.first_name}.</h2>
+        <p className="mx-auto mt-3 max-w-xs text-[15px] leading-relaxed text-white/80">
           We’ve received your request. A member of our team will contact you to schedule your strategy session.
         </p>
-        <a href={contact.phoneHref} className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-white underline" data-track="click_to_call">
+        <a href={contact.phoneHref} className="mt-6 inline-flex items-center gap-2 text-[15px] font-semibold text-white underline" data-track="click_to_call">
           <Icon name="phone" className="size-4" />
           {contact.phone}
         </a>
@@ -129,14 +129,14 @@ export default function HeroForm({ site }) {
 
   return (
     <form ref={formRef} onSubmit={onSubmit} onFocus={onFocus} noValidate aria-labelledby="hero-form-title">
-      <p className="apex-eyebrow text-apex-mist">Private &amp; no obligation</p>
-      <h2 id="hero-form-title" className="mt-2 font-display text-2xl font-medium">
+      <p className="apex-eyebrow text-apex-gold">Private &amp; no obligation</p>
+      <h2 id="hero-form-title" className="mt-2 font-display text-2xl font-semibold">
         Request a Strategy Session
       </h2>
 
       <div role="alert" aria-live="assertive">
         {status === "error" && serverMessage && (
-          <p className="mt-4 flex items-start gap-2 rounded-lg border border-red-300/40 bg-red-500/15 p-3 text-xs text-red-100">
+          <p className="mt-4 flex items-start gap-2 border border-red-300/40 bg-red-500/15 p-3 text-[13px] text-red-100">
             <Icon name="alert-circle" className="size-4 shrink-0" strokeWidth={2} />
             {serverMessage}
           </p>
@@ -181,8 +181,8 @@ export default function HeroForm({ site }) {
       </div>
 
       <div className="mt-4">
-        <label className="flex cursor-pointer items-start gap-2.5 text-xs leading-relaxed text-white/75">
-          <input type="checkbox" name="consent" checked={values.consent} onChange={onChange} {...errorProps("consent")} id={id("consent")} className="mt-0.5 size-4 shrink-0 accent-apex-sky" />
+        <label className="flex cursor-pointer items-start gap-2.5 text-[13px] leading-relaxed text-white/75">
+          <input type="checkbox" name="consent" checked={values.consent} onChange={onChange} {...errorProps("consent")} id={id("consent")} className="mt-0.5 size-4 shrink-0 accent-apex-gold" />
           <span>
             I agree to the{" "}
             <a href={form.privacyUrl} target="_blank" rel="noopener" className="font-medium text-white underline hover:text-apex-mist">Privacy Policy</a>{" "}
@@ -191,14 +191,15 @@ export default function HeroForm({ site }) {
           </span>
         </label>
         {errors.consent && (
-          <p id={`${id("consent")}-error`} className="mt-1.5 flex items-center gap-1.5 text-xs text-red-200">
+          <p id={`${id("consent")}-error`} className="mt-1.5 flex items-center gap-1.5 text-[13px] text-red-200">
             <Icon name="alert-circle" className="size-3.5 shrink-0" strokeWidth={2} />
             {errors.consent}
           </p>
         )}
       </div>
 
-      <button type="submit" disabled={submitting} className="apex-btn mt-5 w-full bg-white text-apex-navy hover:bg-apex-mist disabled:cursor-wait disabled:opacity-70">
+      <button type="submit" disabled={submitting} className="apex-cta apex-btn mt-5 w-full bg-white text-apex-navy disabled:cursor-wait disabled:opacity-70">
+          <span className="apex-cta__label"><span className="apex-cta__text">
         {submitting ? (
           <>
             <span className="size-5 animate-spin rounded-full border-2 border-apex-navy/30 border-t-apex-navy" aria-hidden="true" />
@@ -206,13 +207,14 @@ export default function HeroForm({ site }) {
           </>
         ) : (
           <>
-            <Icon name="calendar" className="size-5" />
             Request My Strategy Session
+            <Icon name="arrow-right" className="size-5" />
           </>
         )}
-      </button>
+          </span></span>
+        </button>
 
-      <p className="mt-3 flex items-center justify-center gap-1.5 text-[11px] text-white/55">
+      <p className="mt-3 flex items-center justify-center gap-1.5 text-[13px] text-white/55">
         <Icon name="lock" className="size-3.5 shrink-0" />
         Please don’t send SSNs, bank details or tax documents here.
       </p>

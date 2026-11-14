@@ -49,6 +49,36 @@ function apex_media_manifest() {
     );
   }
 
+  // Value photos (About): free-license stock from Pexels, photo IDs noted for reference.
+  $value_photos = array(
+    'strategic-thinking' => array('id' => 7504798, 'alt' => 'Hand moving a chess piece on a board'),
+    'integrity'          => array('id' => 7693153, 'alt' => 'Handshake over a desk with documents'),
+    'excellence'         => array('id' => 753695, 'alt' => 'Close-up of a fountain pen nib on paper'),
+    'client-partnership' => array('id' => 8439766, 'alt' => 'Advisor reviewing documents with clients at a table'),
+  );
+  foreach ($value_photos as $slug => $photo) {
+    $manifest['value-' . $slug] = array(
+      'file'  => 'values/' . $slug . '.webp',
+      'title' => 'Value photo — ' . $slug . ' (Pexels #' . $photo['id'] . ')',
+      'alt'   => $photo['alt'],
+    );
+  }
+
+  // Process step photos (How we work): free-license stock from Pexels.
+  $step_photos = array(
+    'discovery'         => array('id' => 36766001, 'alt' => 'Advisor and business owner in conversation over coffee'),
+    'review-assessment' => array('id' => 7793173, 'alt' => 'Reviewing financial documents and charts with a magnifying glass'),
+    'strategy'          => array('id' => 7947836, 'alt' => 'Planning diagram and notebook with a note reading “plan ahead”'),
+    'ongoing-support'   => array('id' => 7643724, 'alt' => 'Advisor on a phone call while working at a laptop'),
+  );
+  foreach ($step_photos as $slug => $photo) {
+    $manifest['step-' . $slug] = array(
+      'file'  => 'steps/' . $slug . '.webp',
+      'title' => 'Process step photo — ' . $slug . ' (Pexels #' . $photo['id'] . ')',
+      'alt'   => $photo['alt'],
+    );
+  }
+
   foreach (apex_team() as $member) {
     if (!empty($member['photo'])) {
       $manifest[apex_team_media_key($member)] = array(

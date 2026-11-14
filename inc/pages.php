@@ -20,29 +20,37 @@ function apex_pages() {
   return array(
     'about-us' => array(
       'title'       => 'About Us',
+      'seo_title'   => 'About Our Accounting & Advisory Firm in Irvine, CA',
+      'heading'     => 'Strategic Accounting and Advisory for Business Owners',
       'description' => 'Learn how Apex Accounting & Advisory helps businesses make confident financial decisions through proactive planning, accounting and advisory services.',
     ),
     'services' => array(
       'title'       => 'Services',
+      'seo_title'   => 'Accounting, Tax & Advisory Services in Irvine, CA',
+      'heading'     => 'Accounting, Tax and Advisory Services',
       'description' => 'Strategic tax planning, executive accounting, business advisory, financial reporting, payroll, IRS compliance, corporate tax preparation and business structure in Irvine, CA.',
     ),
     'team' => array(
       'title'       => 'Team',
+      'seo_title'   => 'Our Accounting & Tax Team in Irvine, CA',
+      'heading'     => 'The Accounting and Tax Team Behind APEX',
       'description' => 'Meet the Apex Accounting & Advisory team guiding clients toward greater clarity, confidence, and financial success.',
     ),
     'contact-us' => array(
       'title'       => 'Contact Us',
+      'seo_title'   => 'Contact Us — Schedule a Strategy Session',
+      'heading'     => 'Schedule a Strategy Session With APEX',
       'description' => 'Schedule a private strategy session with Apex Accounting & Advisory. Call (949) 889-2739 or visit us at 6 Venture, Suite 310, Irvine, CA 92618.',
     ),
     // PENDING LEGAL REVIEW (brief §5.5): text copied verbatim from the live site.
     'privacy-policy' => array(
       'title'       => 'Privacy Policy',
-      'description' => 'How Apex Accounting Inc. collects, uses and protects your information.',
+      'description' => 'How ' . apex_brand_name() . ' collects, uses and protects your information.',
       'content'     => 'privacy-policy.html',
     ),
     'terms-and-conditions' => array(
       'title'       => 'Terms and Conditions',
-      'description' => 'Terms and conditions for using the Apex Accounting Inc. website.',
+      'description' => 'Terms and conditions for using the ' . apex_brand_name() . ' website.',
       'content'     => 'terms-and-conditions.html',
     ),
   );
@@ -86,6 +94,29 @@ function apex_setup_pages() {
     $report[$slug] = is_wp_error($id) ? 'error: ' . $id->get_error_message() : 'created #' . $id;
   }
 
+  // Individual service pages: /services/{slug}/ (children of Services).
+  $parent = get_page_by_path('services', OBJECT, 'page');
+  if ($parent) {
+    foreach (apex_services() as $service) {
+      $path     = 'services/' . $service['slug'];
+      $existing = get_page_by_path($path, OBJECT, 'page');
+      if ($existing && $existing->post_status === 'publish') {
+        $report[$path] = 'exists #' . $existing->ID;
+        continue;
+      }
+      $id = $existing
+        ? wp_update_post(array('ID' => $existing->ID, 'post_status' => 'publish'), true)
+        : wp_insert_post(array(
+          'post_type'   => 'page',
+          'post_name'   => $service['slug'],
+          'post_title'  => $service['title'],
+          'post_parent' => $parent->ID,
+          'post_status' => 'publish',
+        ), true);
+      $report[$path] = is_wp_error($id) ? 'error: ' . $id->get_error_message() : ($existing ? 'published #' : 'created #') . $id;
+    }
+  }
+
   $privacy = get_page_by_path('privacy-policy', OBJECT, 'page');
   if ($privacy) {
     update_option('wp_page_for_privacy_policy', $privacy->ID);
@@ -114,28 +145,6 @@ if (defined('WP_CLI') && WP_CLI) {
   });
 }
 
-/**
- * Meta description for the current view (skipped if an SEO plugin is active).
- */
-function apex_meta_description() {
-  if (defined('WPSEO_VERSION') || defined('RANK_MATH_VERSION') || defined('AIOSEO_VERSION')) {
-    return;
-  }
-
-  $description = '';
-  if (is_front_page()) {
-    $description = 'Apex Accounting Inc. helps business owners in Irvine, CA make confident financial decisions through strategic tax planning, accounting, compliance and business advisory.';
-  } elseif (is_page()) {
-    $pages = apex_pages();
-    $slug  = get_post_field('post_name', get_queried_object_id());
-    $description = $pages[$slug]['description'] ?? '';
-  }
-
-  if ($description) {
-    echo '<meta name="description" content="' . esc_attr($description) . '">' . "\n";
-  }
-}
-add_action('wp_head', 'apex_meta_description', 1);
 
 /**
  * Anchor for the cookie banner's "Learn more" link (/privacy-policy/#cookies).
@@ -177,3 +186,55 @@ function apex_services_schema() {
   echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\n";
 }
 add_action('wp_head', 'apex_services_schema');
+
+/**
+ * The service array when the current page is one of the /services/{slug}/ pages.
+ */
+function apex_current_service() {
+  if (!is_page()) {
+    return null;
+  }
+  $post   = get_queried_object();
+  $parent = $post && $post->post_parent ? get_post($post->post_parent) : null;
+  if (!$parent || $parent->post_name !== 'services') {
+    return null;
+  }
+  return apex_service($post->post_name);
+}
+
+/**
+ * Service pages share one template (page-service.php).
+ */
+function apex_service_template($template) {
+  if (apex_current_service()) {
+    $custom = get_theme_file_path('/page-service.php');
+    if (file_exists($custom)) {
+      return $custom;
+    }
+  }
+  return $template;
+}
+add_filter('template_include', 'apex_service_template');
+
+/**
+ * Service schema on each service page (only what is visible on the page).
+ */
+function apex_service_schema() {
+  $service = apex_current_service();
+  if (!$service) {
+    return;
+  }
+  $c      = apex_contact();
+  $schema = array(
+    '@context'    => 'https://schema.org',
+    '@type'       => 'Service',
+    'name'        => $service['title'],
+    'description' => $service['intro'],
+    'url'         => $service['url'],
+    'serviceType' => $service['title'],
+    'areaServed'  => array('@type' => 'City', 'name' => $c['city'] . ', ' . $c['region']),
+    'provider'    => array('@type' => 'AccountingService', '@id' => home_url('/#organization'), 'name' => $c['name'], 'url' => home_url('/')),
+  );
+  echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\n";
+}
+add_action('wp_head', 'apex_service_schema');

@@ -99,8 +99,7 @@ export default function CookieConsent({ site }) {
     const dialog = dialogRef.current
     if (dialog && !dialog.open) {
       dialog.showModal()
-      window.apexLenis?.stop()
-    }
+      }
   }
 
   const closeDialog = () => {
@@ -116,6 +115,7 @@ export default function CookieConsent({ site }) {
     }
     setPrefs({ analytics: record.analytics, marketing: record.marketing })
     applyConsent(record)
+    window.dispatchEvent(new CustomEvent("apex:consent", { detail: record })) // Clarity (inc/tracking.php)
     window.dataLayer.push({ event: "cookie_consent_update", consent_analytics: record.analytics, consent_marketing: record.marketing })
     setBanner(false)
     closeDialog()
@@ -162,10 +162,9 @@ export default function CookieConsent({ site }) {
       <dialog
         ref={dialogRef}
         aria-labelledby="cookie-dialog-title"
-        onClose={() => window.apexLenis?.start()}
         onClick={e => e.target === dialogRef.current && closeDialog()}
         className="m-auto w-[calc(100%-1.5rem)] max-w-xl rounded-2xl bg-white p-0 text-apex-ink shadow-2xl backdrop:bg-apex-night/60 backdrop:backdrop-blur-sm"
-        data-lenis-prevent
+       
       >
         <div className="flex max-h-[85dvh] flex-col">
           <div className="flex items-start justify-between gap-4 border-b border-apex-line px-6 py-5 sm:px-8">

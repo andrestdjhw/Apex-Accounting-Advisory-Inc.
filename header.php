@@ -33,7 +33,6 @@
   </head>
   <body <?php body_class(); ?>>
     <?php wp_body_open(); ?>
-    <div class="pointer-events-none fixed inset-x-0 top-0 z-[70] h-[3px] origin-left bg-linear-to-r from-apex-navy to-apex-sky" style="transform:scaleX(0)" data-scroll-progress aria-hidden="true"></div>
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-60 focus:rounded-md focus:bg-apex-navy focus:px-4 focus:py-3 focus:text-white">Skip to main content</a>
 
     <?php $contact = apex_contact(); ?>
@@ -64,7 +63,7 @@
     ?>
     <div id="apex-navbar" class="sticky top-0 z-50 min-h-20 bg-white">
       <div class="apex-container flex h-20 items-center justify-between gap-6">
-        <a href="<?php echo esc_url(home_url('/')); ?>" class="shrink-0" aria-label="Apex Accounting Inc. — Home">
+        <a href="<?php echo esc_url(home_url('/')); ?>" class="shrink-0" aria-label="<?php echo esc_attr(apex_brand_name()); ?> — Home">
           <img src="<?php echo esc_url(apex_media_url('logo-black')); ?>" alt="Apex Accounting &amp; Advisory" width="1024" height="163" class="h-8 w-auto sm:h-[37px]">
         </a>
         <nav aria-label="Main" class="hidden xl:block">

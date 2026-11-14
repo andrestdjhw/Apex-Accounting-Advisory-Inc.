@@ -35,7 +35,7 @@ function apex_icon($name, $class = 'size-6') {
 
 function apex_contact() {
   return array(
-    'name'         => 'Apex Accounting Inc.',
+    'name'         => apex_brand_name(), // single brand name (inc/seo.php)
     'phone'        => '(949) 889-2739',
     'phoneHref'    => 'tel:+19498892739',
     'email'        => 'info@apexaccountinginc.com',
@@ -196,7 +196,10 @@ function apex_services() {
   );
 
   foreach ($services as &$service) {
-    $service['url'] = home_url('/services/#' . $service['slug']);
+    $service['url'] = home_url('/services/' . $service['slug'] . '/');
+    // PENDING 828/APEX: concrete deliverables (shown as a marked placeholder). FAQs: apex_service_faqs().
+    $service['deliverables'] = $service['deliverables'] ?? array();
+    $service['faqs']         = apex_service_faqs()[$service['slug']] ?? array();
   }
   return $services;
 }
@@ -272,14 +275,14 @@ function apex_values() {
  */
 function apex_team() {
   return array(
-    array('name' => 'Laura Elena Martinez', 'title' => 'Business Advisor Founder', 'photo' => 'laura-elena-martinez.webp', 'leadership' => true),
+    array('name' => 'Laura Elena Martinez', 'title' => 'Business Advisor', 'title_pending' => 'Founder / co-founder title — pending confirmation', 'credentials' => null, 'bio' => null, 'photo' => 'laura-elena-martinez.webp', 'leadership' => true),
     array('name' => 'Karina Nava', 'title' => 'Enrolled Agent & Tax Expert', 'photo' => 'karina-nava.webp'),
     array('name' => 'Javier Bustamante', 'title' => 'Tax Manager', 'photo' => 'javier.webp'),
-    array('name' => 'Andrea Sanchez', 'title' => 'Senior C.P.A. Partner', 'photo' => 'andrea-sanchez.webp', 'leadership' => true),
+    array('name' => 'Andrea Sanchez', 'title' => 'Senior C.P.A. Partner', 'credentials' => null, 'bio' => null, 'photo' => 'andrea-sanchez.webp', 'leadership' => true),
     array('name' => 'Susie Mena', 'title' => 'Accountant & Tax Expert', 'photo' => 'susie-mena.webp'),
     array('name' => 'Sam Rohani', 'title' => 'Controller', 'photo' => 'sam-rohani.webp'),
     array('name' => 'Ana Valdivia', 'title' => 'Accountant & Tax Expert', 'photo' => 'ana-valdivia.webp'),
-    array('name' => 'Sergio García', 'title' => 'General Manager', 'photo' => 'sergio.webp', 'leadership' => true),
+    array('name' => 'Sergio García', 'title' => 'General Manager', 'credentials' => null, 'bio' => null, 'photo' => 'sergio.webp', 'leadership' => true),
     array('name' => 'Elizabeth Rodriguez', 'title' => 'Tax Department Coordinator', 'photo' => 'elizabeth-rodriguez.webp'),
     array('name' => 'Ipzayana Monroy', 'title' => 'Service Department', 'photo' => 'ipzayana-monroy.webp'),
     array('name' => 'Wassim Attia', 'title' => 'Bookkeeper', 'photo' => null),
@@ -300,7 +303,7 @@ function apex_home_faqs() {
   $c = apex_contact();
   return array(
     array(
-      'q' => 'What services does Apex Accounting Inc. offer?',
+      'q' => 'What services does ' . apex_brand_name() . ' offer?',
       'a' => 'We offer eight core services: Strategic Tax Planning, Executive Accounting, Business Advisory, Financial Reporting, Payroll Services, IRS Compliance, Corporate Tax Preparation and Business Structure. Each engagement is scoped to the needs of your business.',
     ),
     array(
@@ -312,30 +315,118 @@ function apex_home_faqs() {
       'a' => 'We work with business owners, established entrepreneurs and the people responsible for running companies who want financial order and professional guidance as their business grows.',
     ),
     array(
+      'q' => 'What is the difference between tax preparation and tax planning?',
+      'a' => 'Tax preparation looks back: it reports what already happened during the year and files the return. Tax planning looks ahead: it considers the tax side of a decision before you make it, such as its timing or how the business is set up. We offer both, so they work together.',
+    ),
+    array(
+      'q' => 'When is the best time to start tax planning?',
+      'a' => 'Before the decisions it affects, and well ahead of filing season. Once a year has closed, there are fewer choices left to make about it. If you are not sure where to begin, a Strategy Session is a good first step at any time of year.',
+    ),
+    array(
       'q' => 'What is a Strategy Session?',
       'a' => 'A Strategy Session is a private conversation with our team to understand your business, how it is currently structured and where you want it to go, so we can identify how we may be able to help.',
     ),
     array(
+      'q' => 'What should I have ready for the first conversation?',
+      'a' => 'A general picture is enough: what your business does, how it is set up, who handles your books and taxes today, and the questions on your mind. If we need documents later, we will tell you which ones and how to share them securely.',
+    ),
+    array(
+      'q' => 'Can you work alongside my current bookkeeper or accountant?',
+      'a' => 'Several of our services include coordinating with the people who already handle your books or returns. We will talk through your current setup in the Strategy Session and agree on who does what before any work begins.',
+    ),
+    array(
+      'q' => 'I received a letter from the IRS. Can you help?',
+      'a' => 'Bring the notice to a Strategy Session, and keep an eye on any response date it shows. Our IRS Compliance service helps you understand your filing obligations and the next steps a notice may call for. The scope of any help is confirmed with you individually.',
+    ),
+    array(
+      'q' => 'How are your fees determined?',
+      'a' => 'Fees depend on the services and the scope your business needs, so we confirm them with you before any engagement begins. The Strategy Session helps us understand what that scope looks like.',
+    ),
+    array(
+      'q' => 'How do I share documents with APEX?',
+      'a' => 'Existing clients share information through the APEX Client Portal, the online access point for clients. Please do not send Social Security numbers, bank details or tax documents through the website form; it is only for your contact details and a short message.',
+    ),
+    array(
       'q' => 'How do I get started?',
       'a' => sprintf(
-        'Schedule a Strategy Session through our contact page or call us at %s. You can also email %s. Please do not send Social Security numbers, bank details or tax documents through the website form.',
+        'Schedule a Strategy Session through our contact page, call us at %s or email %s. Our office is at %s, %s, %s %s.',
         $c['phone'],
-        $c['email']
+        $c['email'],
+        $c['street'],
+        $c['city'],
+        $c['region'],
+        $c['postalCode']
       ),
     ),
-    array(
-      'q' => 'Where is your office located?',
-      'a' => sprintf('Our office is located at %s, %s, %s %s.', $c['street'], $c['city'], $c['region'], $c['postalCode']),
+  );
+}
+
+/**
+ * Four FAQs per service page (/services/{slug}/).
+ * PENDING CLIENT APPROVAL, same rules as the home FAQs: answers only restate the
+ * published scope of each service. No guarantees, savings promises, specific
+ * entity/return types or IRS representation claims.
+ */
+function apex_service_faqs() {
+  return array(
+    'strategic-tax-planning' => array(
+      array('q' => 'How is tax planning different from tax preparation?', 'a' => 'Tax preparation reports what already happened and files the return. Tax planning looks at the tax side of your decisions before you make them, so they are made with clearer information.'),
+      array('q' => 'How often do we meet?', 'a' => 'Periodic check-ins are part of the service, along with conversations before major decisions. How often depends on your business and is agreed when the engagement starts.'),
+      array('q' => 'Can tax planning guarantee I will pay less tax?', 'a' => 'No one can promise a specific result. Planning helps you understand the tax implications of your options ahead of time, so you can choose with the full picture.'),
+      array('q' => 'Does planning connect with my tax return?', 'a' => 'Yes. Planning is coordinated with your accounting and tax preparation, so what is decided during the year is reflected when your return is prepared.'),
     ),
-    array(
-      'q' => 'What is the Client Portal?',
-      'a' => 'The Client Portal is the online access point for existing APEX clients. If you are a client and need help accessing it, please contact our office.',
+    'executive-accounting' => array(
+      array('q' => 'What does Executive Accounting include?', 'a' => 'Bookkeeping and account reconciliation, organized and up-to-date financial records, and regular reviews of your financial activity with your team.'),
+      array('q' => 'My books are behind. Can you help?', 'a' => 'Bring your current situation to a Strategy Session. We will review where your records stand and confirm what it would take to bring them up to date before any engagement begins.'),
+      array('q' => 'Do you work with the accounting software I already use?', 'a' => 'Tell us what you use today. We will confirm in the Strategy Session how we would work with your current tools and team.'),
+      array('q' => 'How does this help me make decisions?', 'a' => 'Accurate, current numbers are what most business decisions depend on. Organized records give you and your advisors a reliable view of how the business is doing.'),
+    ),
+    'business-advisory' => array(
+      array('q' => 'What kinds of questions does business advisory cover?', 'a' => 'Decisions about growth, operations, profitability or change, and the financial questions that come with running a company day to day.'),
+      array('q' => 'How is advisory different from accounting?', 'a' => 'Accounting records and reports what happened. Advisory uses that information to help you decide what to do next, with recommendations, priorities and next steps.'),
+      array('q' => 'Is it a one-time project or ongoing?', 'a' => 'It can be either. Ongoing advisory as your needs evolve is part of the service; the format is agreed with you at the start.'),
+      array('q' => 'What do you need from me to start?', 'a' => 'Your goals, your current challenges and access to the financial information behind your decisions. We will tell you exactly what is useful during the Strategy Session.'),
+    ),
+    'financial-reporting' => array(
+      array('q' => 'Which reports will I receive?', 'a' => 'Periodic financial statements, focused on the information you actually use. Which reports, and how often, are agreed with you.'),
+      array('q' => 'Will someone explain the numbers?', 'a' => 'Yes. Walk-throughs that explain what the numbers show are part of the service, so the reports are useful and not just delivered.'),
+      array('q' => 'A lender or partner asked for statements. Can you help?', 'a' => 'Tell us what they have asked for during the Strategy Session, so the scope of your reporting can take it into account.'),
+      array('q' => 'How do reports connect to planning?', 'a' => 'We help you connect what the reports show to your planning, so decisions about the year ahead are based on current numbers.'),
+    ),
+    'payroll-services' => array(
+      array('q' => 'What does payroll support include?', 'a' => 'Payroll processing on an agreed schedule, payroll records coordinated with your accounting, and a point of contact for payroll questions.'),
+      array('q' => 'Do you help with payroll-related filings?', 'a' => 'Support with payroll-related filings can be part of the service, within the scope we agree with you before the engagement begins.'),
+      array('q' => 'How does payroll connect with my accounting?', 'a' => 'Payroll records are coordinated with your accounting, so wages and related costs are reflected consistently in your books and reports.'),
+      array('q' => 'Who do I contact with a payroll question?', 'a' => 'You have a point of contact at APEX for payroll questions, so you always know who to reach.'),
+    ),
+    'irs-compliance' => array(
+      array('q' => 'What does IRS Compliance support include?', 'a' => 'A review of your filing obligations and deadlines, organization of the records compliance depends on, and guidance on next steps when questions come up.'),
+      array('q' => 'I received an IRS notice. What should I do?', 'a' => 'Read it carefully and note any response date it shows. Then bring it to a Strategy Session, and we will help you understand what it refers to and the next steps it may call for.'),
+      array('q' => 'Can you help me get organized before deadlines?', 'a' => 'Yes. Reviewing your obligations and deadlines and organizing the records they depend on is the core of this service.'),
+      array('q' => 'How does compliance connect with my tax returns?', 'a' => 'Compliance work is coordinated with your tax preparation and planning, so obligations are tracked in one place rather than handled separately.'),
+    ),
+    'corporate-tax-preparation' => array(
+      array('q' => 'What information is needed to prepare my business return?', 'a' => 'Generally, the financial records for the year and information about the business entity. We will confirm the list for your situation and how to share it securely.'),
+      array('q' => 'Will I review the return before it is filed?', 'a' => 'Yes. A review of the return with you before filing is part of the service.'),
+      array('q' => 'When should I start?', 'a' => 'As soon as your year closes. Starting early leaves time to gather records, answer questions and review the return without rushing.'),
+      array('q' => 'My books are not up to date. Can you still prepare the return?', 'a' => 'An accurate return depends on accurate records. We will review where your books stand and discuss the options, including our Executive Accounting service.'),
+    ),
+    'business-structure' => array(
+      array('q' => 'What does a business structure review look at?', 'a' => 'Your current or planned structure, the entity options available and their general tax and accounting considerations, in light of your long-term goals.'),
+      array('q' => 'When should I review my structure?', 'a' => 'When starting a business, and again when it changes: new partners, growth, a change in ownership or new plans. A structure that fit at the start may not fit later.'),
+      array('q' => 'Do you handle the legal side of an entity change?', 'a' => 'Legal documents and filings involve your legal advisors. We coordinate with them where needed and support the accounting side of any change.'),
+      array('q' => 'How does structure relate to taxes?', 'a' => 'How a business is structured can affect how it is taxed and accounted for. Reviewing structure together with your tax planning helps you decide with the full picture.'),
     ),
   );
 }
 
 function apex_faq_schema() {
-  if (!APEX_FAQS_APPROVED || !is_front_page()) {
+  if (!APEX_FAQS_APPROVED) {
+    return;
+  }
+  $service = function_exists('apex_current_service') ? apex_current_service() : null;
+  $faqs    = is_front_page() ? apex_home_faqs() : ($service ? $service['faqs'] : array());
+  if (!$faqs) {
     return;
   }
   $schema = array(
@@ -347,7 +438,7 @@ function apex_faq_schema() {
         'name'           => $faq['q'],
         'acceptedAnswer' => array('@type' => 'Answer', 'text' => $faq['a']),
       );
-    }, apex_home_faqs()),
+    }, $faqs),
   );
   echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES) . '</script>' . "\n";
 }
@@ -356,6 +447,62 @@ add_action('wp_head', 'apex_faq_schema');
 /**
  * Data handed to React components.
  */
+/*
+ * ---------------------------------------------------------------------------
+ * Proof and trust content (828 review, Priority 2).
+ * Everything here comes from Laura / 828, confirmed. Until it arrives each item
+ * renders as a marked placeholder (apex_pending()). NEVER put example numbers here.
+ * ---------------------------------------------------------------------------
+ */
+
+/** Proof strip under the hero: label => confirmed value (null = pending). */
+function apex_proof() {
+  return array(
+    array('label' => 'Years serving clients', 'value' => null),
+    array('label' => 'Businesses served', 'value' => null),
+    array('label' => 'Team professionals', 'value' => null),
+    array('label' => 'Credentials', 'value' => null),
+  );
+}
+
+/** Industries served (strings). */
+function apex_industries() {
+  return array();
+}
+
+/** 2–3 anonymized client results: situation, work, outcome. */
+function apex_results() {
+  return array();
+}
+
+/** Real reviews: quote, author (name or initials), source. */
+function apex_reviews() {
+  return array();
+}
+
+/** Professional associations, if any: name, url. */
+function apex_associations() {
+  return array();
+}
+
+/**
+ * Marked placeholder for pending content. Visible on staging on purpose.
+ */
+function apex_pending($text, $tag = 'span') {
+  return sprintf('<%1$s class="apex-pending">[%2$s]</%1$s>', tag_escape($tag), esc_html($text));
+}
+
+/**
+ * Sister sites linked from the footer (828 review, Priority 4.6).
+ * PENDING: swap to the production domains at launch (lem. is still on staging).
+ */
+function apex_network() {
+  return array(
+    array('label' => 'Laura Elena Martinez', 'url' => 'https://lem.828marketingsolutions.com/'),
+    array('label' => 'Remake Business Advisors', 'url' => 'https://remakeadvisors.com/'),
+  );
+}
+
 function apex_js_data() {
   return array(
     'homeUrl'  => home_url('/'),
@@ -375,23 +522,10 @@ function apex_js_data() {
       'privacyUrl' => home_url('/privacy-policy/'),
       'termsUrl'   => home_url('/terms-and-conditions/'),
     ),
+    'network'  => apex_network(),
     'legal'    => array(
       array('label' => 'Privacy Policy', 'url' => home_url('/privacy-policy/')),
       array('label' => 'Terms & Conditions', 'url' => home_url('/terms-and-conditions/')),
     ),
-  );
-}
-
-/**
- * Section eyebrow with the animated rule ("OUR SERVICES ———").
- */
-function apex_eyebrow($text, $tone = 'light') {
-  $color = $tone === 'dark' ? 'text-apex-mist' : 'text-apex-sky';
-  $line  = $tone === 'dark' ? 'bg-apex-mist' : 'bg-apex-sky';
-  return sprintf(
-    '<p class="apex-eyebrow flex items-center gap-4 %1$s">%2$s <span class="h-px w-16 %3$s" data-reveal="line" style="--reveal-delay:300ms" aria-hidden="true"></span></p>',
-    $color,
-    esc_html($text),
-    $line
   );
 }

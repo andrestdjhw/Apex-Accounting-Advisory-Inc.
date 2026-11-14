@@ -1,0 +1,10 @@
+# Development files must never be public (828 review, Priority 1).
+# Deploy with `npm run bundle`; this is only a safety net if they get uploaded by mistake.
+<IfModule mod_authz_core.c>
+  <FilesMatch "^(package(-lock)?\.json|\.gitignore|\.distignore|.+\.map|.+\.md|.+\.sh)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+<IfModule mod_alias.c>
+  RedirectMatch 404 /(node_modules|src|scripts|dist|\.git)(/|$)
+</IfModule>

@@ -321,7 +321,8 @@ export default function ContactForm({ site }) {
           <Icon name="lock" className="size-4 shrink-0" />
           Your information is sent securely and only used to contact you.
         </p>
-        <button type="submit" disabled={submitting} className="apex-btn-primary w-full shrink-0 whitespace-nowrap disabled:cursor-wait disabled:opacity-70 sm:w-auto">
+        <button type="submit" disabled={submitting} className="apex-cta apex-btn w-full shrink-0 whitespace-nowrap bg-apex-navy text-white disabled:cursor-wait disabled:opacity-70 sm:w-auto">
+          <span className="apex-cta__label"><span className="apex-cta__text">
           {submitting ? (
             <>
               <span className="size-5 animate-spin rounded-full border-2 border-white/30 border-t-white" aria-hidden="true" />
@@ -333,6 +334,7 @@ export default function ContactForm({ site }) {
               Request My Strategy Session
             </>
           )}
+          </span></span>
         </button>
       </div>
     </form>
